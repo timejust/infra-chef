@@ -14,7 +14,10 @@ recipe           "application::php", "Deploys a PHP application specified in a d
 recipe           "application::rails", "Deploys a Rails application specified in a data bag with the deploy_revision resource"
 recipe           "application::tomcat", "Sets up the deployed Java application with Tomcat as the servlet container"
 recipe           "application::unicorn", "Sets up the deployed Rails application with Unicorn as the web server"
+recipe           "application::users", "Sets up the users to deploy the application"
+recipe           "application::rails", "Deploys a Rails application specified in a data bag with the deploy_revision resource"
+recipe           "application::rails_nginx_ree_passenger", "Deprecated recipe that deployed a rails application under Ruby Enterprise Edition, Passenger and Nginx"
 
-%w{ runit unicorn apache2 passenger_apache2 tomcat python gunicorn apache2 php }.each do |cb|
+%w{ apt ruby_enterprise php apache2 runit unicorn user deploy nginx java monit hudson logrotate }.each do |cb|
   depends cb
 end
