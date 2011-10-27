@@ -1,0 +1,13 @@
+{
+  "name": "server-ubuntu",
+  "default_attributes": {
+  },
+  "json_class": "Chef::Role",
+  "run_list": [
+    "recipe[server]"
+  ],
+  "description": "Role for setting up a base ubuntu box",
+  "chef_type": "role",
+  "override_attributes": {
+  }
+}
