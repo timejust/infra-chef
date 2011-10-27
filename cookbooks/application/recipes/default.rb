@@ -17,14 +17,39 @@
 # limitations under the License.
 #
 
-search(:apps) do |app|
-  (app["server_roles"] & node.run_list.roles).each do |app_role|
-    app["type"][app_role].each do |thing|
-      node.run_state[:current_app] = app
-      include_recipe "application::#{thing}"
-    end
+include_recipe "deploy"
+include_recipe "apt"
+
+# Do things necessary for the development environment
+if node.app_environment == "development" 
+  # set hosts if in development
+  bash "change hostname" do
+    code <<-EOH
+      sudo bash
+      echo app-web.local > /etc/hostname
+      hostname -b -F /etc/hostname
+    EOH
   end
 end
 
-node.run_state.delete(:current_app)
+node.run_state[:apps] = []
+
+search(:apps) do |app|
+  (app["server_roles"] & node.run_list.roles).each do |app_role|
+    if node.app_environment == "development" 
+      app['owner'] = "leeloo"
+      app['group'] = "leeloo"
+    end
+    node.run_state[:apps] << {:app => app, :recipes => app["type"][app_role]}
+  end
+end
+
+node.run_state[:apps].map {|a| a[:recipes]}.flatten.each do |recipe|
+  ## Do this so that different databaags with the same recipe can run
+  node.run_state[:seen_recipes].delete("application::#{recipe}")
+  include_recipe "application::#{recipe}"
+end
+
+
+node.run_state.delete(:apps)
 
