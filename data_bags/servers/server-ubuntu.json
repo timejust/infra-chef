@@ -1,0 +1,15 @@
+{
+  "server_roles": [
+    "server-ubuntu"
+  ],
+  "packages": {
+  },
+  "id": "server-ubuntu",
+  "type": {
+    "server-ubuntu": [
+      "update-server",
+      "server-ubuntu"
+    ]
+  }
+}
+
