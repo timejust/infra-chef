@@ -1,54 +1,60 @@
-This directory contains the cookbooks used to configure systems in your infrastructure with Chef.
+Opscode Public Cookbooks for Chef
+=================================
 
-Knife needs to be configured to know where the cookbooks are located with the `cookbook_path` setting. If this is not set, then several cookbook operations will fail to work properly.
+This repository is the primary project source of Opscode's published, public cookbooks for Chef. This repository is considered "in development." Published cookbooks are shared by Opscode on the Chef Community Site.
 
-    cookbook_path ["./cookbooks"]
+Cookbooks in this repository are only ones maintained and supportable by Opscode. We do provide bug fixes
 
-This setting tells knife to look for the cookbooks directory in the present working directory. This means the knife cookbook subcommands need to be run in the `chef-repo` directory itself. To make sure that the cookbooks can be found elsewhere inside the repository, use an absolute path. This is a Ruby file, so something like the following can be used:
+Using this Repository
+=====================
 
-    current_dir = File.dirname(__FILE__)
-    cookbook_path ["#{current_dir}/../cookbooks"]
+Opscode does not recommend that you use this repository directly, either as a submodule or as a "canonical" repository. Chef Cookbooks are "packages" for managing resources in your infrastructure, and there are as many ways to manage the various pieces of software provided here as there are different infrastructures. These cookbooks reflect our opinions about the best ways to manage these infrastructure components with Chef.
 
-Which will set `current_dir` to the location of the knife.rb file itself (e.g. `~/chef-repo/.chef/knife.rb`).
-
-Configure knife to use your preferred copyright holder, email contact and license. Add the following lines to `.chef/knife.rb`.
-
-    cookbook_copyright "Example, Com."
-    cookbook_email     "cookbooks@example.com"
-    cookbook_license   "apachev2"
-
-Supported values for `cookbook_license` are "apachev2", "mit","gplv2","gplv3",  or "none". These settings are used to prefill comments in the default recipe, and the corresponding values in the metadata.rb. You are free to change the the comments in those files.
-
-Create new cookbooks in this directory with Knife.
-
-    knife cookbook create COOKBOOK
-
-This will create all the cookbook directory components. You don't need to use them all, and can delete the ones you don't need. It also creates a README file, metadata.rb and default recipe.
-
-You can also download cookbooks directly from the Opscode Cookbook Site. There are two subcommands to help with this depending on what your preference is.
-
-The first and recommended method is to use a vendor branch if you're using Git. This is automatically handled with Knife.
+We recommend you install our cookbooks into your Chef repository from the Chef Community site, and uploaded to your Chef Server with the command-line tool "knife".
 
     knife cookbook site install COOKBOOK
+    knife cookbook upload COOKBOOK
 
-This will:
+Use of this repository is recommended for developers who wish to contribute fixes to Opscode's cookbooks.
 
-* Download the cookbook tarball from cookbooks.opscode.com.
-* Ensure its on the git master branch.
-* Checks for an existing vendor branch, and creates if it doesn't.
-* Checks out the vendor branch (chef-vendor-COOKBOOK).
-* Removes the existing (old) version.
-* Untars the cookbook tarball it downloaded in the first step.
-* Adds the cookbook files to the git index and commits.
-* Creates a tag for the version downloaded.
-* Checks out the master branch again.
-* Merges the cookbook into master.
-* Repeats the above for all the cookbooks dependencies, downloading them from the community site
+Bugs
+====
 
-The last step will ensure that any local changes or modifications you have made to the cookbook are preserved, so you can keep your changes through upstream updates.
+Like any software, there may be bugs in our cookbooks. You can open a ticket in the COOK project at:
 
-If you're not using Git, use the site download subcommand to download the tarball.
+* http://tickets.opscode.com
 
-    knife cookbook site download COOKBOOK
+If you know the fix for the bug, you can contribute it. See __Contributing__ below.
 
-This creates the COOKBOOK.tar.gz from in the current directory (e.g., `~/chef-repo`). We recommend following a workflow similar to the above for your version control tool.
+Do note that if you downloaded a cookbook from the community site that is not maintained by Opscode, you'll need to contact the maintainer of that cookbook for contributing fixes.
+
+Contributing
+============
+
+For information on how to contribute, see CONTRIBUTING.
+
+Opscode cookbooks are distributed under the Apache 2 Software License. See LICENSE.
+
+Links
+=====
+
+Chef Community Site:
+
+* http://community.opscode.com
+
+Cookbooks Project Source:
+
+* http://github.com/opscode/cookbooks
+
+Chef Repository Skeleton:
+
+* http://github.com/opscode/chef-repo
+
+Tickets/Issues (COOK project):
+
+* http://tickets.opscode.com/
+
+Chef Documentation:
+
+* http://wiki.opscode.com/display/chef/Home/
+* http://help.opscode.com
