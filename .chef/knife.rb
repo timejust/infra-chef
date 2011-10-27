@@ -7,4 +7,7 @@ validation_key           '/etc/chef/validation.pem'
 chef_server_url          'http://chef.timejust.com:4000'
 cache_type               'BasicFile'
 cache_options( :path => "#{ENV['HOME']}/.chef/checksums" )
-cookbook_path            ["#{current_dir}/../cookbooks"]
+cookbook_path            ["cookbooks"]
+cookbook_copyright       "timejust.com"
+cookbook_email           "minsik.kim@timejust.com"
+cookbook_license         "apachev2"
