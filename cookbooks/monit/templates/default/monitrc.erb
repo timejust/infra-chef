@@ -1,0 +1,14 @@
+set daemon <%= @node[:monit][:poll_period] %>
+  with start delay <%= @node[:monit][:poll_start_delay] %>
+
+set logfile /var/log/monit.log
+
+set eventqueue basedir /var/monit/ slots 1000
+set mmonit http://<%= @node[:monit][:server][:username] %>:<%= @node[:monit][:server][:password] %>@<%= @monitserver %>:<%= @node[:monit][:server][:port] %>/collector
+
+set httpd port 2812 and use address <%= @ipaddress %>
+    allow localhost
+    allow <%= @monitserver %>
+    
+include /etc/monit/conf.d/*.conf
+
