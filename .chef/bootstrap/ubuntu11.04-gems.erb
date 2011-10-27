@@ -1,0 +1,63 @@
+bash -c '
+if [ ! -f /usr/bin/chef-client ]; then
+  sudo apt-get -y install zlib1g-dev libssl-dev libreadline5-dev libyaml-dev build-essential bison checkinstall
+  cd /tmp
+  wget http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.2-p180.tar.gz
+  tar xvzf ruby-1.9.2-p180.tar.gz
+  cd ruby-1.9.2-p180
+  ./configure --prefix=/usr\
+            --program-suffix=1.9.2\
+            --with-ruby-version=1.9.2\
+            --disable-install-doc
+  make
+  sudo checkinstall -D -y\
+                  --fstrans=no\
+                  --nodoc\
+                  --pkgname='ruby1.9.2'\
+                  --pkgversion='1.9.2-p180'\
+                  --provides='ruby'\
+                  --requires='libc6,libffi5,libgdbm3,libncurses5,libreadline5,openssl,libyaml-0-2,zlib1g'\
+                  --maintainer=brendan.ribera@gmail.com
+  sudo update-alternatives --install /usr/bin/ruby ruby /usr/bin/ruby1.9.2 500\
+                        --slave   /usr/bin/ri   ri   /usr/bin/ri1.9.2\
+                        --slave   /usr/bin/irb  irb  /usr/bin/irb1.9.2\
+                        --slave   /usr/bin/gem  gem  /usr/bin/gem1.9.2\
+                        --slave   /usr/bin/erb  erb  /usr/bin/erb1.9.2\
+                        --slave   /usr/bin/rdoc rdoc /usr/bin/rdoc1.9.2
+
+  sudo gem update --system
+fi
+gem install ohai --no-rdoc --no-ri --verbose <%= '--prerelease' if @config[:prerelease] %>
+gem install chef -v="0.9.16" --no-rdoc --no-ri
+
+mkdir -p /etc/chef
+
+(
+cat <<'EOP'
+<%= IO.read(Chef::Config[:validation_key]) %>
+EOP
+) > /tmp/validation.pem
+awk NF /tmp/validation.pem > /etc/chef/validation.pem
+rm /tmp/validation.pem
+
+(
+cat <<'EOP'
+log_level        :info
+log_location     STDOUT
+chef_server_url  "<%= Chef::Config[:chef_server_url] %>"
+validation_client_name "<%= Chef::Config[:validation_client_name] %>"
+<% if @config[:chef_node_name] == nil %>
+# Using default node name"
+<% else %>
+node_name "<%= @config[:chef_node_name] %>"
+<% end %> 
+EOP
+) > /etc/chef/client.rb
+
+(
+cat <<'EOP'
+<%= { "run_list" => @run_list }.to_json %>
+EOP
+) > /etc/chef/first-boot.json
+
+/usr/bin/chef-client -j /etc/chef/first-boot.json'
