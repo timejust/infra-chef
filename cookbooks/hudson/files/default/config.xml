@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>Smartdate web application&#xd;
+&#xd;
+url: http://staging.smartdate.com:8843</description>
+  <logRotator>
+    <daysToKeep>7</daysToKeep>
+    <numToKeep>-1</numToKeep>
+    <artifactDaysToKeep>-1</artifactDaysToKeep>
+    <artifactNumToKeep>-1</artifactNumToKeep>
+  </logRotator>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <com.coravy.hudson.plugins.github.GithubProjectProperty>
+      <projectUrl>https://github.com/smartdate/app-web/</projectUrl>
+    </com.coravy.hudson.plugins.github.GithubProjectProperty>
+  </properties>
+  <scm class="hudson.plugins.git.GitSCM">
+    <configVersion>1</configVersion>
+    <remoteRepositories>
+      <org.spearce.jgit.transport.RemoteConfig>
+        <string>origin</string>
+        <int>5</int>
+        <string>fetch</string>
+        <string>+refs/heads/*:refs/remotes/origin/*</string>
+        <string>receivepack</string>
+        <string>git-upload-pack</string>
+        <string>uploadpack</string>
+        <string>git-upload-pack</string>
+        <string>url</string>
+        <string>git@github.com:smartdate/app-web.git</string>
+        <string>tagopt</string>
+        <string></string>
+      </org.spearce.jgit.transport.RemoteConfig>
+    </remoteRepositories>
+    <branches>
+      <hudson.plugins.git.BranchSpec>
+        <name>master</name>
+      </hudson.plugins.git.BranchSpec>
+    </branches>
+    <localBranch></localBranch>
+    <mergeOptions/>
+    <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+    <authorOrCommitter>false</authorOrCommitter>
+    <clean>false</clean>
+    <wipeOutWorkspace>false</wipeOutWorkspace>
+    <buildChooser class="hudson.plugins.git.util.DefaultBuildChooser"/>
+    <gitTool>Default</gitTool>
+    <submoduleCfg class="list"/>
+    <relativeTargetDir></relativeTargetDir>
+    <excludedRegions></excludedRegions>
+    <excludedUsers></excludedUsers>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers class="vector">
+    <hudson.triggers.SCMTrigger>
+      <spec>* * * * *</spec>
+    </hudson.triggers.SCMTrigger>
+  </triggers>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>git checkout master
+git pull origin master
+sudo rake gems:install RAILS_ENV=staging
+git checkout test
+git merge master
+rake db:migrate RAILS_ENV=test
+rake spec RAILS_ENV=test
+</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>git checkout master
+git checkout staging
+git pull origin staging 
+git merge master
+git push origin staging
+git checkout master</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>git checkout staging
+git pull origin staging
+cap staging deploy
+cap staging deploy:migrate
+git checkout master</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>sudo rake metrics:all</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers>
+    <hudson.tasks.ArtifactArchiver>
+      <artifacts>tmp/metric_fu/output/</artifacts>
+      <latestOnly>false</latestOnly>
+    </hudson.tasks.ArtifactArchiver>
+    <hudson.plugins.chucknorris.CordellWalkerRecorder>
+      <factGenerator/>
+    </hudson.plugins.chucknorris.CordellWalkerRecorder>
+    <hudson.plugins.rubyMetrics.railsStats.RailsStatsPublisher>
+      <rake>
+        <rakeInstallation>enterprise</rakeInstallation>
+        <rakeWorkingDir></rakeWorkingDir>
+        <tasks>stats</tasks>
+        <silent>true</silent>
+      </rake>
+      <rakeInstallation>enterprise</rakeInstallation>
+      <rakeWorkingDir></rakeWorkingDir>
+      <task>stats</task>
+    </hudson.plugins.rubyMetrics.railsStats.RailsStatsPublisher>
+    <hudson.tasks.Mailer>
+      <recipients>development@smartdate.com</recipients>
+      <dontNotifyEveryUnstableBuild>false</dontNotifyEveryUnstableBuild>
+      <sendToIndividuals>true</sendToIndividuals>
+    </hudson.tasks.Mailer>
+  </publishers>
+  <buildWrappers/>
+</project>
