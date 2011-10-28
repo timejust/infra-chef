@@ -47,6 +47,7 @@ end
 node.run_state[:apps].map {|a| a[:recipes]}.flatten.each do |recipe|
   ## Do this so that different databaags with the same recipe can run
   node.run_state[:seen_recipes].delete("application::#{recipe}")
+  Chef::Log.info("include_recipe application::#{recipe}")
   include_recipe "application::#{recipe}"
 end
 
