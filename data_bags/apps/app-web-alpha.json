@@ -1,0 +1,29 @@
+{
+  "group": "deploy",
+  "repository": "git@github.com:timejust/app-web-alpha.git",
+  "server_roles": [
+    "app-web-alpha"
+  ],
+  "packages": {
+    "ruby1.8-dev": "",
+    "mysql-client": "",
+    "libmysqlclient-dev": "",
+    "libcurl4-gnutls-dev": "",
+    "libxslt1-dev": "",
+    "libxml2-dev": "",
+    "curl": ""
+  },
+  "id": "app-web-alpha",
+  "type": {
+    "app-web": [
+      "users",
+      "ruby_enterprise",
+      "nginx",
+      "rails",
+      "thin",
+      "app-web-alpha"
+    ]
+  },
+  "deploy_to": "/var/www/app-web-alpha"
+}
+
