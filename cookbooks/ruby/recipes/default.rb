@@ -24,13 +24,13 @@ end
 extra_packages = case node[:platform]
   when "ubuntu","debian"
     %w{
-      ruby1.9.1
-      ruby1.9.1-dev
-      rdoc1.9.1
-      ri1.9.1
+      ruby1.8
+      ruby1.8-dev
+      rdoc1.8
+      ri1.8
       irb1.9.1
-      libshadow-ruby1.9.1
-      libopenssl-ruby1.9.1
+      libshadow-ruby1.8
+      libopenssl-ruby
     }
   when "centos","redhat","fedora"
     %w{
@@ -53,4 +53,9 @@ unless extra_packages.nil?
     end
   end
 end
+
+#execute "Create symbolic link for ruby 1.9.1" do
+#  command "ln -sf /usr/bin/ruby1.9.1 /usr/bin/ruby"
+#end
+
 

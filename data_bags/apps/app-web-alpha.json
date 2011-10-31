@@ -62,7 +62,7 @@
     }
   },
   "packages": {
-    "ruby1.9.1-dev": "",
+    "ruby1.8-dev": "",
     "mysql-client": "",
     "libmysqlclient-dev": "",
     "libcurl4-gnutls-dev": "",
