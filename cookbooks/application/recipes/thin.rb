@@ -38,8 +38,6 @@ node.run_state[:apps].each do |current_app|
     mode '0755'
   end
 
-  Chef::Log.info("#{app['id']} ********** THIN RECIPE CALLED")   
-
   ## logroate
   logrotate_app "#{app['id']}" do
     path        "/var/log/#{app['id']}/*.log"
@@ -100,18 +98,26 @@ node.run_state[:apps].each do |current_app|
 
  # node.set[:unicorn][:options] = { :tcp_nodelay => true, :backlog => 100 }
 
- # unicorn_config "/etc/unicorn/#{app['id']}.rb" do
- #   listen({ node[:unicorn][:port] => node[:unicorn][:options] })
- #   working_directory File.join(app['deploy_to'], 'current')
- #   worker_timeout node[:unicorn][:worker_timeout] 
- #   preload_app node[:unicorn][:preload_app] 
- #   worker_processes node[:unicorn][:worker_processes]
- #   before_fork node[:unicorn][:before_fork]
- #   after_fork node[:unicorn][:after_fork]
- #   pid node.default[:unicorn][:pid]
- #   stderr_path node.default[:unicorn][:stderr_path]
- #   stdout_path node.default[:unicorn][:stdout_path]
- # end
+  bash "install thin" do
+    code <<-EOH
+      thin install
+    EOH
+  end
+
+  template "/etc/thin/#{app['id']}.yml" do
+    source "thin/thin.yml.erb"
+    owner "root"
+    group "root"
+    mode 0644
+    variables :name => app['id'],
+              :timeout => 10,
+              :port => 3000,
+              :log_path => "#{app['id']}_out.log",
+              :max_conns => 1024,
+              :environment => node.app_environment,
+              :servers => 3,
+              :deploy_to => app['deploy_to'] 
+  end
 
  # unicorn_startup app['id'] do
  #   app_root      File.join(app['deploy_to'], 'current')

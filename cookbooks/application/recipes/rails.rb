@@ -58,7 +58,7 @@ node.run_state[:apps].each do |current_app|
         gem_package gem do
           action :install
           version ver if ver && ver.length > 0
-          not_if "sleep 10000", :timeout => 900
+          #not_if "sleep 10000", :timeout => 900
         end
       end
     end

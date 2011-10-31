@@ -62,7 +62,7 @@
     }
   },
   "packages": {
-    "ruby1.9-dev": "",
+    "ruby1.9.1-dev": "",
     "mysql-client": "",
     "libmysqlclient-dev": "",
     "libcurl4-gnutls-dev": "",
@@ -85,7 +85,7 @@
   "type": {
     "app-web-alpha": [
       "users",
-      "ruby_enterprise",
+      "ruby",
       "nginx",
       "rails",
       "thin",
@@ -124,7 +124,7 @@
     "staging": "staging"
   },
   "gems": {
-    "bundler": "1.0.10"
+    "bundler": "1.0.21"
   },
   "deployment": {
     "production": {

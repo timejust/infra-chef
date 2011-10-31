@@ -24,13 +24,13 @@ end
 extra_packages = case node[:platform]
   when "ubuntu","debian"
     %w{
-      ruby1.8
-      ruby1.8-dev
-      rdoc1.8
-      ri1.8
-      irb1.8
-      libshadow-ruby1.8
-      libopenssl-ruby
+      ruby1.9.1
+      ruby1.9.1-dev
+      rdoc1.9.1
+      ri1.9.1
+      irb1.9.1
+      libshadow-ruby1.9.1
+      libopenssl-ruby1.9.1
     }
   when "centos","redhat","fedora"
     %w{

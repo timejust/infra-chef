@@ -1,0 +1,19 @@
+##
+# Thin config at <%= @name %>
+# Managed by Chef - Local Changes will be Nuked from Orbit (just to be sure)
+##
+---
+pid: /var/run/<%=@name %>/thin.pid
+address: 0.0.0.0
+timeout: <%=@timeout %>
+port: <%=@port %>
+log: /var/log/<%=@name %>/<%=@log_path %>
+max_conns: <%=@max_conns %>
+require: ['rubygems']
+
+environment: <%=@environment %>
+max_persistent_conns: 512
+servers: <%=@servers %>
+daemonize: true
+chdir: <%=@deploy_to %>/current/
+
