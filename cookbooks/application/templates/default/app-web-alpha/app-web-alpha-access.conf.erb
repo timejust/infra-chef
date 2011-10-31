@@ -1,0 +1,6 @@
+# For blocking of specific countries
+# default allow all
+geo $ip_ranges {
+  default  0;
+  include  access_lists/<%= @access_list %>;
+}

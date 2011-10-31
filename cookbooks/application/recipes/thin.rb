@@ -38,6 +38,8 @@ node.run_state[:apps].each do |current_app|
     mode '0755'
   end
 
+  Chef::Log.info("#{app['id']} ********** THIN RECIPE CALLED")   
+
   ## logroate
   logrotate_app "#{app['id']}" do
     path        "/var/log/#{app['id']}/*.log"
@@ -125,15 +127,15 @@ node.run_state[:apps].each do |current_app|
 
 
   ## Setup monitoring  
-  %w(
-      thin_status
-    ).each do |plugin_name|
-      munin_plugin plugin_name do
-        plugin "#{plugin_name}#{node[:ipaddress].gsub('.','_')}"
-        create_file true
-        use_template true
-        options(:rails_root =>File.join(app['deploy_to'], 'current'), :pid_file => node.default[:thin][:pid])
-      end
-    end
+ # %w(
+ #     thin_status
+ #   ).each do |plugin_name|
+ #     munin_plugin plugin_name do
+ #       plugin "#{plugin_name}#{node[:ipaddress].gsub('.','_')}"
+ #       create_file true
+ #       use_template true
+ #       options(:rails_root =>File.join(app['deploy_to'], 'current'), :pid_file => node.default[:thin][:pid])
+ #     end
+ #   end
 end
 
