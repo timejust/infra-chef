@@ -28,7 +28,7 @@ extra_packages = case node[:platform]
       ruby1.8-dev
       rdoc1.8
       ri1.8
-      irb1.9.1
+      irb1.8.1
       libshadow-ruby1.8
       libopenssl-ruby
     }

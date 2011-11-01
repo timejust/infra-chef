@@ -3,7 +3,7 @@ if [ ! -f /usr/bin/chef-client ]; then
   sudo apt-get -y install zlib1g-dev libssl-dev libreadline5-dev libyaml-dev build-essential bison checkinstall
   cd /tmp
   wget http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.2-p180.tar.gz
-  tar xvzf ruby-1.9.2-p180.tar.gz
+  tar xvzf ruby-1.9.2-p290.tar.gz
   cd ruby-1.9.2-p180
   ./configure --prefix=/usr\
             --program-suffix=1.9.2\
@@ -28,7 +28,7 @@ if [ ! -f /usr/bin/chef-client ]; then
   sudo gem update --system
 fi
 gem install ohai --no-rdoc --no-ri --verbose <%= '--prerelease' if @config[:prerelease] %>
-gem install chef -v="0.9.16" --no-rdoc --no-ri
+gem install chef -v="0.10.4" --no-rdoc --no-ri
 
 mkdir -p /etc/chef
 
