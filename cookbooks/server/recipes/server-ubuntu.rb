@@ -45,7 +45,7 @@ node.run_state[:servers].each do |current_server|
         end
       end   
   
-  include_recipe "monit"
+  # include_recipe "monit"
   # include_recipe "zerigo"
  
   # The following bashes ensure there will be no issue with open files
