@@ -1,13 +1,13 @@
 maintainer       "timejust.com"
 maintainer_email "minsik.kim@timejust.com"
 license          "Apache 2.0"
-description      "Installs/Configures ruby"
+description       "Installs Ruby 1.9.2 from source"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
-version          "0.0.1"
+version           "1.0"
+supports          ubuntu
 
-recipe "ruby", "Installs ruby packages"
-
-%w{ centos redhat fedora ubuntu debian arch}.each do |os|
-  supports os
+%w( apt build-essential ).each do |d|
+  depends d
 end
 
+recipe            "ruby-1.9.2", "Installs Ruby 1.9.2 from source."

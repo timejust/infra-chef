@@ -1,61 +1,37 @@
-#
-# Cookbook Name:: ruby
-# Recipe:: default
-#
-# Copyright 2011, timejust.com
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
+include_recipe "apt"
+include_recipe "build-essential"
 
-package "ruby" do
-  action :install
-end
+ruby_installed_check = "ruby -v | grep #{ node[:ruby][:version].gsub( '-', '' ) }"
 
-extra_packages = case node[:platform]
-  when "ubuntu","debian"
-    %w{
-      ruby1.8
-      ruby1.8-dev
-      rdoc1.8
-      ri1.8
-      irb1.8.1
-      libshadow-ruby1.8
-      libopenssl-ruby
-    }
-  when "centos","redhat","fedora"
-    %w{
-      ruby-libs
-      ruby-devel
-      ruby-docs
-      ruby-ri
-      ruby-irb
-      ruby-rdoc
-      ruby-mode
-    }
-  when "arch"
-    %w{ ruby-docs }
-  end
-
-unless extra_packages.nil?
-  extra_packages.each do |pkg|
-    package pkg do
-      action :install
-    end
+%w( wget zlib1g-dev libssl-dev libffi-dev libxml2-dev libncurses5-dev libreadline5-dev ).each do |pkg|
+  package pkg do
+    action :install
   end
 end
 
-#execute "Create symbolic link for ruby 1.9.1" do
-#  command "ln -sf /usr/bin/ruby1.9.1 /usr/bin/ruby"
-#end
+execute "get & unpack #{ node[:ruby][:version] }" do
+  user "root"
+  command "cd /usr/src && wget ftp://ftp.ruby-lang.org/pub/ruby/1.9/ruby-#{ node[:ruby][:version] }.tar.bz2 && tar xjf ruby-#{ node[:ruby][:version] }.tar.bz2 && cd ruby-#{ node[:ruby][:version] }"
+  not_if ruby_installed_check
+end
 
+execute "configure & make #{ node[:ruby][:version] }" do
+  user "root"
+  command "cd /usr/src/ruby-#{ node[:ruby][:version] } && ./configure && make && make install"
+  not_if ruby_installed_check
+end
 
+%w( openssl readline ).each do |ext|
+  execute "configure & make #{ node[:ruby][:version] } #{ext} support" do
+    user "root"
+    command "cd /usr/src/ruby-#{ node[:ruby][:version] }/ext/#{ext}/ && ruby extconf.rb && make && make install"
+    not_if ruby_installed_check
+  end
+end
+
+%w( ohai chef ).each do |g|
+  gem_package g do
+    action :install
+    gem_binary('/usr/local/bin/gem')
+  end
+end
