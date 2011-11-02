@@ -9,8 +9,8 @@ upstream thin_server_<%= @app %>_ssl {
 <%- else %>
 upstream thin_server_<%= @app %> {
 <%- end %>
-  <%4 do |instance|%>
-  server unix:/tmp/<%= @app %>/thin.<= @instance %>.sock
+  <%4.times do |instance|%>
+  server unix:/tmp/<%= @app %>/thin.<%= @instance %>.sock;
   <%end%>
 }
 
