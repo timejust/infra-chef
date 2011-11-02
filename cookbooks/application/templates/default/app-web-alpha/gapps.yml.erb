@@ -1,0 +1,20 @@
+:all:
+  :shared_calendars:
+    :public_transport_faster:
+      :name: 'GreenProposal'
+      :color: '#0D7813'
+    :public_transport_minimum_change:
+      :name: 'PinkProposal'
+      :color: '#B1365F'
+    :car:
+      :name: 'YellowProposal'
+      :color: '#AB8B00'
+:<%=@environment%>:
+  :gapps:
+    :oauth:
+      :for_domains:
+        :consumer_key: '<%=@gapps["domains"]["consumer_key"]%>'
+        :consumer_secret: '<%=@gapps["domains"]["consumer_secret"]%>'
+      :for_gmail:
+        :consumer_key: '<%=@gapps["gmail"]["consumer_key"]%>'
+        :consumer_secret: '<%=@gapps["gmail"]["consumer_secret"]%>'

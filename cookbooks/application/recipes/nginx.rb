@@ -35,6 +35,7 @@ node.run_state[:apps].each do |current_app|
     group "root"
     mode "0644"
     variables(
+      :num_upstream => app['site'][node.app_environment]['num_upstream'],
       :app => app['id'],
       :docroot => "/var/www/#{app['id']}/current",
       :server_name => app['site'][node.app_environment]['hostname'] ? app['site'][node.app_environment]['hostname'] : "#{node[:fqdn]}",

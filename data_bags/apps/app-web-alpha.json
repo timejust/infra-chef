@@ -14,6 +14,121 @@
     "development": false,
     "staging": false
   },
+  "mongodb": {
+    "development": {
+      "host": "localhost",
+      "database": "app_web_development"
+    },
+    "staging": {
+      "host": "localhost",
+      "database": "app_web_staging"
+    },
+    "production": {
+      "host": "localhost",
+      "database": "app_web_production"
+    }
+  },
+  "gapps": {
+    "development": {
+      "gmail": {
+        "consumer_key": "22942625083.apps.googleusercontent.com",
+        "consumer_secret": "Fzt7HYOUpq-X187p0rkfB6Hq"
+      },
+      "domains": {
+        "consumer_key": "502137022926.apps.googleusercontent.com",
+        "consumer_secret": "RFvbtQoJM4wmxftpy17o1OJk"
+      }
+    },
+    "staging": {
+      "gmail": {
+        "consumer_key": "723050567289.apps.googleusercontent.com",
+        "consumer_secret": "jnE2VYzhwcfUsy9BC29TL9t6"
+      },
+      "domains": {
+        "consumer_key": "502137022926.apps.googleusercontent.com",
+        "consumer_secret": "RFvbtQoJM4wmxftpy17o1OJk"
+      }
+    },
+    "production": {
+      "gmail": {
+        "consumer_key": "54779436562.apps.googleusercontent.com",
+        "consumer_secret": "0DoZNgo2ZJx3mT0D-QxdhJPF"
+      },
+      "domains": {
+        "consumer_key": "502137022926.apps.googleusercontent.com",
+        "consumer_secret": "RFvbtQoJM4wmxftpy17o1OJk"
+      }
+    }
+  },
+  "urls": {
+    "development": {
+      "api": {
+        "url": "http://services-staging.timejust.com/v1",
+        "user": "timejust",
+        "password": "t1m3ju$t"
+      },
+      "gadget": "http://staging.timejust.com/gadget/timejust.xml",
+      "web": "http://staging.timejust.com",
+      "ratp_proxy": "http://proxy.bearstech.lan:8080/"
+    },
+    "staging": {
+      "api": {
+        "url": "http://api-staging.timejust.com/v1",
+        "user": "timejust",
+        "password": "t1m3ju$t"
+      },
+      "gadget": "http://staging.timejust.com/gadget/timejust.xml",
+      "web": "http://staging.timejust.com",
+      "ratp_proxy": "http://proxy.bearstech.lan:8080/"
+    },
+    "production": {
+      "api": {
+        "url": "http://api.timejust.com/v1",
+        "user": "timejust",
+        "password": "t1m3ju$t"
+      },
+      "gadget": "http://www.timejust.com/gadget/timejust.xml",
+      "web": "http://www.timejust.com",
+      "ratp_proxy": "http://proxy.bearstech.lan:8080/"
+    }
+  },
+  "redis": {
+    "development": {
+      "host": "localhost",
+      "port": "6379",
+      "namespace": "timejust:development",
+      "resque_namespace": "resque"
+    },
+    "staging": {
+      "host": "localhost",
+      "port": "6379",
+      "namespace": "timejust:staging",
+      "resque_namespace": "resque"
+    },
+    "production": {
+      "host": "localhost",
+      "port": "6379",
+      "namespace": "timejust:production",
+      "resque_namespace": "resque"
+    }
+  },
+  "thin": {
+    "development": {
+      "timeout": "10",
+      "port": "3000",
+      "max_conns": "1024"
+    },
+    "staging": {
+      "timeout": "10",
+      "port": "3000",
+      "max_conns": "1024"
+    },
+    "production": {
+      "timeout": "10",
+      "port": "3000",
+      "max_conns": "1024"
+    }
+  },
   "databases": {
     "production": {
       "reconnect": "true",
@@ -87,6 +202,7 @@
       "ruby",
       "nginx",
       "rails",
+      "rails_mongodb",
       "thin",
       "app-web-alpha"
     ]
@@ -98,7 +214,8 @@
       "port": "80",
       "access_list": "app-web-alpha-blacklist.conf",
       "use_geoip": "true",
-      "environment": "production"
+      "environment": "production",
+      "num_upstream": "4"
     },
     "development": {
       "hostname": "app-web.local",
@@ -106,7 +223,8 @@
       "port": "80",
       "access_list": "app-web-alpha-blacklist.conf",
       "use_geoip": "true",
-      "environment": "development"
+      "environment": "development",
+      "num_upstream": "2"
     },
     "staging": {
       "hostname": "staging.timejust.com *.staging.smartdate.com",
@@ -114,7 +232,8 @@
       "port": "80",
       "access_list": "app-web-alpha-blacklist.conf",
       "use_geoip": "true",
-      "environment": "staging"
+      "environment": "staging",
+      "num_upstream": "3"
     }
   },
   "revision": {

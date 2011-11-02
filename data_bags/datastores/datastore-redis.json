@@ -1,0 +1,40 @@
+{
+  "group": "nobody",
+  "server_roles": [
+    "datastore-redis"
+  ],
+  "id": "datastore-redis",
+  "type": {
+    "datastore-redis": [
+      "redis"
+    ]
+  },
+  "configuration": {
+    "development": {
+      "version": "2.2.4",
+      "port": "6379",
+      "timeout": "300",
+      "databases": "16",
+      "loglevel": "notice",
+      "listen": "0.0.0.0"
+    },
+    "staging": {
+      "version": "2.2.4",
+      "port": "6379",
+      "timeout": "300",
+      "databases": "16",
+      "loglevel": "notice",
+      "listen": "0.0.0.0"
+    },
+    "production": {
+      "version": "2.2.4",
+      "port": "6379",
+      "timeout": "300",
+      "databases": "16",
+      "loglevel": "notice",
+      "listen": "0.0.0.0"
+    }
+  },
+  "owner": "nobody"
+}
+

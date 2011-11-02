@@ -13,6 +13,7 @@ recipe           "application::rails", "Deploys a Rails application specified in
 recipe           "application::tomcat", "Sets up the deployed Java application with Tomcat as the servlet container"
 recipe           "application::thin", "Sets up the deployed Rails application with Thin as the web server"
 recipe           "application::users", "Sets up the users to deploy the application"
+recipe           "application::rails_mongodb", "Sets up the mongodb configuration in rails application"
 
 %w{ apt ruby php apache2 runit thin user deploy nginx java monit hudson logrotate }.each do |cb|
   depends cb

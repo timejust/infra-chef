@@ -1,4 +1,6 @@
-default[:nginx][:version]      = "0.8.54"
+default[:nginx][:version]      = "1.0.5"
+default[:nginx][:install_path] = "/opt/nginx-#{nginx[:version]}"
+default[:nginx][:src_binary]   = "#{nginx[:install_path]}/sbin/nginx"
 
 case platform
 when "debian","ubuntu"
@@ -12,6 +14,16 @@ else
   set[:nginx][:user]    = "www-data"
   set[:nginx][:binary]  = "/usr/sbin/nginx"
 end
+
+default[:nginx][:configure_flags] = [
+  "--prefix=#{nginx[:install_path]}",
+  "--conf-path=#{nginx[:dir]}/nginx.conf",
+  "--with-http_ssl_module",
+  "--with-http_gzip_static_module",
+  "--with-http_realip_module",
+  "--with-http_stub_status_module",
+  "--with-http_geoip_module"
+]
 
 default[:nginx][:gzip] = "on"
 default[:nginx][:gzip_http_version] = "1.0"
@@ -31,5 +43,9 @@ default[:nginx][:gzip_types] = [
 default[:nginx][:keepalive]          = "on"
 default[:nginx][:keepalive_timeout]  = 65
 default[:nginx][:worker_processes]   = cpu[:total]
-default[:nginx][:worker_connections] = 2048
+default[:nginx][:worker_connections] = 20480
+default[:nginx][:worker_rlimit_nofile] = 30000
 default[:nginx][:server_names_hash_bucket_size] = 64
+
+default[:nginx][:jvm_route_version] = "0.1"
+

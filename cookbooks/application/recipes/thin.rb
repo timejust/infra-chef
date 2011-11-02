@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: application
-# Recipe:: unicorn 
+# Recipe:: thin 
 #
 # Copyright 2011, timejust.com
 ##
@@ -38,6 +38,13 @@ node.run_state[:apps].each do |current_app|
     mode '0755'
   end
 
+  # create place for socket
+  directory "/tmp/#{app['id']}" do
+    owner app['owner']
+    group app['group']
+    mode '0755'
+  end
+
   ## logroate
   logrotate_app "#{app['id']}" do
     path        "/var/log/#{app['id']}/*.log"
@@ -47,89 +54,55 @@ node.run_state[:apps].each do |current_app|
     create      "644 #{app['owner']} #{app['group']}"
   end
 
-  #node.default[:unicorn][:worker_timeout] = 60
-  #node.default[:unicorn][:preload_app] = true
-  #node.default[:unicorn][:worker_processes] = [node[:cpu][:total].to_i * 2, 8].min
-  #node.default[:unicorn][:port] = "/var/run/#{app['id']}/unicorn.sock"
-  #node.default[:unicorn][:pid] = "/var/run/#{app['id']}/unicorn-master.pid"
-
-  #node.default[:unicorn][:stderr_path] = "/var/log/#{app['id']}/#{app['id']}-err.log"
-  #node.default[:unicorn][:stdout_path] = "/var/log/#{app['id']}/#{app['id']}-out.log"
-
-  #node.default[:unicorn][:before_fork] = <<-EOH
-  #old_pid = '/var/run/#{app['id']}/unicorn-master.pid.oldbin'
-  #  if File.exists?(old_pid) && server.pid != old_pid
-  #    begin
-  #      Process.kill("QUIT", File.read(old_pid).to_i)
-  #    rescue Errno::ENOENT, Errno::ESRCH
-  #      # someone else did our job for us
-  #    end
-  #  end
-  #EOH
-
-  #node.default[:unicorn][:after_fork] = <<-EOH
-  #  #CHIMNEY.client.connect_to_server
-  #  ActiveRecord::Base.establish_connection
-  #  # Redis and Memcached would go here but their connections are established
-  #  # on demand, so the master never opens a socket
-
-    ##
-    # Unicorn master is started as root, which is fine, but let's
-    # drop the workers to something else
- #   begin
- #     uid, gid = Process.euid, Process.egid
- #     user, group = '#{app['owner']}', '#{app['group']}'
- #     target_uid = Etc.getpwnam(user).uid
- #     target_gid = Etc.getgrnam(group).gid
- #     worker.tmp.chown(target_uid, target_gid)
- #     if uid != target_uid || gid != target_gid
- #       Process.initgroups(user, target_gid)
- #       Process::GID.change_privilege(target_gid)
- #       Process::UID.change_privilege(target_uid)
- #     end
- #   rescue => e
- #     if RAILS_ENV == 'development'
- #       STDERR.puts "couldn't change user, oh well"
- #     else
- #       raise e
- #     end
- #   end
- # EOH
-
- # node.set[:unicorn][:options] = { :tcp_nodelay => true, :backlog => 100 }
-
   bash "install thin" do
     code <<-EOH
       thin install
     EOH
   end
 
+  thin = app['thin'][node.app_environment]
+ 
+  # Write thin configuration yml 
   template "/etc/thin/#{app['id']}.yml" do
     source "thin/thin.yml.erb"
     owner "root"
     group "root"
     mode 0644
     variables :name => app['id'],
-              :timeout => 10,
-              :port => 3000,
+              :timeout => thin['timeout'],
+              :port => thin['port'],
               :log_path => "#{app['id']}_out.log",
-              :max_conns => 1024,
+              :max_conns => thin['max_conns'],
               :environment => node.app_environment,
-              :servers => 3,
+              :servers => app['site'][node.app_environment]['num_upstream'],
               :deploy_to => app['deploy_to'] 
   end
 
- # unicorn_startup app['id'] do
- #   app_root      File.join(app['deploy_to'], 'current')
- #   environment   node.app_environment
- # end  
-  
- # if File.exists?(File.join(app['deploy_to'], "current"))
- #  d = resources(:deploy => app['id'])
- #  d.restart_command do
- #    execute "/etc/init.d/#{app['id']} restart"
- #  end
- # end
+  # Write thin startup script
+  template "/etc/init.d/#{app['id']}" do
+    source  "startup/app-thin.erb"
+    owner   "root"
+    group   "root"
+    mode    "0755"
+    variables(
+      :app_name => app['id']
+    )
+  end
+
+  bash "register startup" do 
+    user "root"
+    code <<-EOH
+      update-rc.d #{app['id']} defaults
+    EOH
+    not_if { File.exists?("/etc/init.d/#{app['id']}") }  
+  end
+
+  #if File.exists?(File.join(app['deploy_to'], "current"))
+  #  d = resources(:deploy => app['id'])
+  #  d.restart_command do
+  #    execute "/etc/init.d/#{app['id']} restart"
+  #  end
+  #end
 
 
   ## Setup monitoring  

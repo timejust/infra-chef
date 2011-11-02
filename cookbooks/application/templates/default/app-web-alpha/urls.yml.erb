@@ -1,0 +1,12 @@
+:<%=@environment%>:
+  :api:
+    :url: "<%=@urls['api']['url']%>"
+    :basic_auth:
+      :user: "<%=@urls['api']['user']%>"
+      :password: "<%=@urls['api']['password']%>" 
+  :gadget:
+    :url: "<%=@urls['gadget']%>"
+  :web:
+    :url: "<%=@urls['web']%>"
+  :ratp_proxy:
+    :url: "<%=@urls['ratp_proxy']%>"

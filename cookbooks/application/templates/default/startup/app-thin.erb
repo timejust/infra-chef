@@ -1,0 +1,40 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          thin
+# Required-Start:    $local_fs $remote_fs
+# Required-Stop:     $local_fs $remote_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      S 0 1 6
+# Short-Description: thin initscript
+# Description:       thin
+### END INIT INFO
+
+# Original author: Forrest Robertson
+
+# Do NOT "set -e"
+
+# Feel free to change any of the following variables for your app:
+PID=/var/run/<%= @app_name %>/thin.0.pid
+DAEMON=/usr/local/bin/thin
+CONFIG_PATH=/etc/thin/<%= @app_name %>.yml
+
+# Exit if the package is not installed
+[ -x "$DAEMON" ] || exit 0
+
+old_pid="$PID.oldbin"
+
+case $1 in
+start)
+        $DAEMON start -C $CONFIG_PATH
+	;;
+stop)
+        $DAEMON stop -C $CONFIG_PATH
+	;;
+restart|reload)
+	$DAEMON restart -C $CONFIG_PATH
+	;;
+*)
+	echo >&2 "Usage: $0 <start|stop|restart|reload>"
+	exit 1
+	;;
+esac
