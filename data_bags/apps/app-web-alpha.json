@@ -224,7 +224,7 @@
       "access_list": "app-web-alpha-blacklist.conf",
       "use_geoip": "true",
       "environment": "development",
-      "num_upstream": "2"
+      "num_upstream": "1"
     },
     "staging": {
       "hostname": "staging.timejust.com *.staging.smartdate.com",
@@ -233,7 +233,7 @@
       "access_list": "app-web-alpha-blacklist.conf",
       "use_geoip": "true",
       "environment": "staging",
-      "num_upstream": "3"
+      "num_upstream": "2"
     }
   },
   "revision": {
