@@ -9,8 +9,9 @@ upstream thin_server_<%= @app %>_ssl {
 <%- else %>
 upstream thin_server_<%= @app %> {
 <%- end %>
-    
-  server unix:/tmp/<%= @app %>/thin.0.sock
+  <%4 do |instance|%>
+  server unix:/tmp/<%= @app %>/thin.<= @instance %>.sock
+  <%end%>
 }
 
 server {
@@ -36,8 +37,8 @@ server {
 
     # Retrieve client's IP address in HTTP request, rather than load balancer.
     # See http://wiki.nginx.org/NginxHttpRealIpModule.
-    set_real_ip_from        <%= @set_real_ip_from %>;
-    real_ip_header          X-Forwarded-For;
+    #set_real_ip_from        <%= @set_real_ip_from %>;
+    #real_ip_header          X-Forwarded-For;
     
     # Block ipranges
     if ($ip_ranges) {
