@@ -43,7 +43,7 @@ node.run_state[:apps].each do |current_app|
   end
 
  # create place for pids
-  directory "#{app['deploy_to']}/tmp/pids" do
+  directory "#{app['deploy_to']}/current/tmp/pids" do
     owner app['owner']
     group app['group']
     mode '0755'
