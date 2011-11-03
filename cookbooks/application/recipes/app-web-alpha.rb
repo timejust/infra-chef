@@ -42,6 +42,16 @@ node.run_state[:apps].each do |current_app|
     )
   end
 
+  # restart resque pool
+  bash "#{app['id']}: bundle exec rake resque:pool:restart RAILS_ENV=#{node.app_environment}" do
+    cwd "#{app['deploy_to']}/current"
+    code <<-EOH
+      bundle exec rake resque:pool:stop RAILS_ENV=#{node.app_environment}
+      bundle exec rake resque:pool:start RAILS_ENV=#{node.app_environment}
+    EOH
+    ignore_failure true
+  end
+
   service "#{app[:id]}" do
     action :restart
     ignore_failure true

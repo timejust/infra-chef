@@ -156,24 +156,6 @@
       "database": "app_web_alpha_staging",
       "host": "localhost",
       "password": "staging"
-    },
-    "test": {
-      "reconnect": "true",
-      "encoding": "utf8",
-      "username": "root",
-      "adapter": "mysql",
-      "database": "app_web_test",
-      "password": "sa",
-      "socket": "/var/run/mysqld/mysqld.sock"
-    },
-    "cucumber": {
-      "reconnect": "true",
-      "encoding": "utf8",
-      "username": "root",
-      "adapter": "mysql",
-      "database": "app_web_cucumber",
-      "password": "sa",
-      "socket": "/var/run/mysqld/mysqld.sock"
     }
   },
   "packages": {
@@ -182,6 +164,7 @@
     "libcurl4-gnutls-dev": "",
     "libxslt1-dev": "",
     "libxml2-dev": "",
+    "libnotify-bin": "",
     "curl": ""
   },
   "authorized_keys": {

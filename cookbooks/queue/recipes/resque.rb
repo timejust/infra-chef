@@ -8,13 +8,13 @@ node.run_state[:queues].each do |current_queue|
   next unless current_queue[:recipes].include? "resque"
 
   queue = current_queue[:queue]
+  #Chef::Log.info("*********************#{queue['gems']}")
 
   node.default[:resque][:gems] = queue['gems']
   node.default[:resque][:redis_server] = queue['configuration'][node.app_environment]['redis_server']
   node.default[:resque][:frontend][:dir]  = queue['deploy_to']
   node.default[:resque][:frontend][:owner]  = queue['owner']
   node.default[:resque][:frontend][:group]  = queue['group']
-
 
   include_recipe "resque"
   

@@ -11,7 +11,6 @@
   "packages": {
   },
   "gems": {
-    "system_timer": "1.0",
     "resque": "1.10.0",
     "resque-scheduler":"1.9.6",
     "thin": ""

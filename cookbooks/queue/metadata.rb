@@ -8,6 +8,6 @@ version          "0.0.1"
 recipe           "queue", "Loads queues databags and selects recipes to use"
 recipe           "queue::rabbitmq", "Installs rabbitMQ"
 
-%w{  }.each do |cb|
+%w{ resque  }.each do |cb|
   depends cb
 end
