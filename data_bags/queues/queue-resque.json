@@ -1,0 +1,33 @@
+{
+  "server_roles": [
+    "queue-resque"
+  ],
+  "id": "queue-resque",
+  "type": {
+    "queue-resque": [
+      "resque"
+    ]
+  },
+  "packages": {
+  },
+  "gems": {
+    "system_timer": "1.0",
+    "resque": "1.10.0",
+    "resque-scheduler":"1.9.6",
+    "thin": ""
+  },
+  "configuration": {
+    "development": {
+      "redis_server": "localhost"
+    },
+    "staging": {
+      "redis_server": "localhost"
+    },
+    "production": {
+      "redis_server": "localhost"
+    }
+  },
+  "owner": "deploy",
+  "group": "deploy",
+  "deploy_to": "/var/www/app-resque-frontend"
+}

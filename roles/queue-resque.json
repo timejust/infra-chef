@@ -1,0 +1,14 @@
+{
+  "name": "queue-resque",
+  "default_attributes": {
+  },
+  "json_class": "Chef::Role",
+  "run_list": [
+    "recipe[queue]"
+  ],
+  "description": "Redis-backed Ruby library for creating background jobs, placing those jobs on multiple queues, this role depends on datastore-redis",
+  "chef_type": "role",
+  "override_attributes": {
+  }
+}
+
