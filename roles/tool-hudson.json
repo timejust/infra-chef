@@ -1,0 +1,15 @@
+{
+  "name": "tool-hudson",
+  "default_attributes": {
+  },
+  "json_class": "Chef::Role",
+  "run_list": [
+    "recipe[git]",
+    "recipe[tool]"
+  ],
+  "description": "Extensible continuous integration server with Chuck Norris",
+  "chef_type": "role",
+  "override_attributes": {
+  }
+}
+
