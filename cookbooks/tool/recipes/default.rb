@@ -24,8 +24,8 @@ include_recipe "apt"
 node.run_state[:tools] = []
 
 search(:tools) do |tool|
-  (app["server_roles"] & node.run_list.roles).each do |tool_role|
-    node.run_state[:apps] << {:app => app, :recipes => app["type"][app_role]}
+  (tool["server_roles"] & node.run_list.roles).each do |tool_role|
+    node.run_state[:tools] << {:tool => tool, :recipes => tool["type"][tool_role]}
   end
 end
 

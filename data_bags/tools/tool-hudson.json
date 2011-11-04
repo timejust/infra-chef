@@ -1,0 +1,24 @@
+{
+  "group": "hudson",
+  "server_roles": [
+    "tool-hudson"
+  ],
+  "packages": {
+	"libxt-dev": ""
+  },
+  "id": "tool-hudson",
+  "type": {
+    "tool-hudson": [
+      "users",
+      "tool-hudson"
+    ]
+  },
+  "gems": {
+    "bundler": "1.0.21"
+  },
+  "owner": "hudson",
+  "port": "8000",
+  "deploy_to": "/var/lib/hudson",
+  "database_master_role": [],
+  "deploy_key":"-----BEGIN RSA PRIVATE KEY-----\nMIIEogIBAAKCAQEAvvA/47cW9VduJPUZZKx/WhRyxmHnkyBQaCajNOaJvUbFTAJD\ngP1LWTqqfnBVCqAJN/iiw77XokpErG+j+7VxPl9gRU8v0PBw+EZ5jly312N5Uddr\nS2UeN3KygVkI8WNtdrS6FAxEwmvWMlxaDyvEDKO4MOuIOTHypDqH+xVNH5Xbaz2g\nX/wlTQZshO2v7NGCWbEI+49twP2x4CPImWagHZE5aW2uTz2tYYQ3hxmBCguMIh6B\nTKe9k2kHqnZ+PJRFwoTeTZj5aIY/oja+QHw32g+9mT70llRit2xWfs3FdHBfTu40\nWZSeA1zWQbDAT8X5VkqIeW+7Ktfb6ULAGDPFpwIBIwKCAQAgu3iqsawqDvzwZIgC\noTpnNrSXCXgn2adiT8Q09FIgcog46nH42vb5WoOgpYrr4OujMfAETJn+kGOLRlag\nLbukSt1Ntc2uyiH+rP7lNHdJfsRXLD5HcGuUeg/46rETcCFkzoZMlGOPCywIoh4R\nOrPk6N2/PlHd604qyDSRcV2tpF0R79zsdZyXE/ASilCg1g1gNXP2TSC492qALoBL\nHjyzY9au45TkCKOLpar7zqRGfNktHvHePMO/dFqrO5vP7FPUkZb8vskMp+nFbRxx\nhj4OCoBM1nQi+HqBnKP4h5p0BLdKnM2bIAtQtnSiAlzPszn6zB/EHiRHPpa6vxxK\nXPAbAoGBAPT+kydsF/mDFruUeIX89ThQnSKa6GGojHQhgD6mNk+ow052l/tukSRY\ntwd/R7eQN5FLc0ErZJMHB746Y7Jd0cZlESqf/zigjF2wUa+k4ONU3gy4CiGeq6JP\nqEOZkxoXXx/q0mHAzKM0srJO4QVE79uSlV6FKL+NxiU56LCB+jRVAoGBAMeECJrl\n4MUDULiETlOa+6atMWyZOnfheKXS6Z2SVUOzsjFL+3kDz3mvhsqgRwsz+7KkzBKQ\n4LSvj+Mz4b73NUEFd8LrQNao0Q5Hkz4FYZUzScR2UdgrqfXJB6u7ePu4SxIw3niP\n4mN31yZBwfL560uMuRtRlyf9efIYqeqPG24LAoGBAKD/ED56O6P3DvBLn6iBqHV2\nzakGtfcIXExQh3mgbNVDBABcj8J727jMlYiVeEVtZlgqRGynfJsh4IRSQYPXQLWS\n32UnT/IDGmlz3ehzqbn18QELOduUJ6UtCCxsPBh1wirqxMPlGMMFX3x8+kVKjv4B\nPZXiedz2xAnVmOkE9OCPAoGAZpusp27on9XRvfrmdCPR4LDXlu+3q14DiHsZDzVQ\na/YD3taelgH1rEukaDUr2eA4TT7PWgFdnsCwZjfwcNboMBFwyqTfhFbR6hYud6r+\n/EZDMdZzO/ky1izfX6I+OFAmm6QapGdBOnglgWOlkubuCZjUOe9yTxSlHWvFGYtt\nMUcCgYEA1FE/jDSeWnsEyXfpwORd0BnNQ1iQdMBZMKknw4UFH8ipzJ64ynZZ2Ajv\nZFA4WCaH6J2eAgK+RL2WT1Oe2KJK3Fhh8Yb7aQ3ywLWRTfHzUZIg7UJb6pqeZQDa\nVWWF6VCQad72ucllMn3cMAkEoKxNqUKaWrNoQxWoFndUmO5vMjg=\n-----END RSA PRIVATE KEY-----"
+}

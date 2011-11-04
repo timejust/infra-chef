@@ -23,7 +23,7 @@ execute "apt-get-update" do
   command "apt-get update"
   ignore_failure true
   not_if do ::File.exists?('/var/lib/apt/periodic/update-success-stamp') end
-  action :nothing
+  action :run
 end
 
 # provides /var/lib/apt/periodic/update-success-stamp on apt-get update
