@@ -4,7 +4,14 @@
     "tool-hudson"
   ],
   "packages": {
-	"libxt-dev": ""
+	"libxt-dev": "",
+	"mysql-client": "",
+    "libmysqlclient-dev": "",
+    "libcurl4-gnutls-dev": "",
+    "libxslt1-dev": "",
+    "libxml2-dev": "",
+    "libnotify-bin": "",
+    "curl": ""
   },
   "id": "tool-hudson",
   "type": {
