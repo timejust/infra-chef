@@ -17,26 +17,33 @@
 # limitations under the License.
 #
 
-munin_servers = search(:node, "role:#{node['munin']['server_role']} AND chef_environment:#{node.chef_environment}")
-
 package "munin-node"
+package "munin-java-plugins"
+package "munin-plugins-extra"
+
+## Create log directory
+directory "/var/log/munin" do  
+  mode        0755
+  recursive   true
+  not_if { File.exists?("/var/log/munin") }
+end
 
 service "munin-node" do
   supports :restart => true
   action :enable
 end
 
+# Overrides the default jar with a newer version
+remote_file "/usr/share/munin/munin-jmx-plugins.jar" do
+  source "http://archiva.smartdate.com:8080/archiva/repository/internal/org/munin/munin-jmx-plugins/2.0-alpha2/munin-jmx-plugins-2.0-alpha2.jar"
+  mode 0644
+end
+
+munin_servers = search(:node, "role:monitoring-munin")
+
 template "/etc/munin/munin-node.conf" do
   source "munin-node.conf.erb"
   mode 0644
   variables :munin_servers => munin_servers
   notifies :restart, resources(:service => "munin-node")
-end
-
-case node[:platform]
-when "arch"
-  execute "munin-node-configure --shell | sh" do
-    not_if { Dir.entries("/etc/munin/plugins").length > 2 }
-    notifies :restart, "service[munin-node]"
-  end
 end

@@ -1,0 +1,5 @@
+[postfix_mailstats]
+user root
+group adm
+env.logdir /var/log
+env.logfile mail.log

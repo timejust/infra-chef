@@ -18,20 +18,33 @@
 #
 
 
-define :munin_plugin, :plugin_config => "/etc/munin/plugins", :plugin_dir => "/usr/share/munin/plugins", :create_file => false, :enable => true do
+define :munin_plugin, :plugin_config => "/etc/munin/plugins", :plugin_dir => "/usr/share/munin/plugins", :create_file => false, :conf_file => false, :enable => true, :options => Hash.new, :use_template => false do
 
   include_recipe "munin::client"
 
   plugin = params[:plugin] ? params[:plugin] : params[:name]
 
   if params[:create_file]
-    cookbook_file "#{params[:plugin_dir]}/#{params[:name]}" do
-      cookbook "munin"
-      source "plugins/#{params[:name]}"
-      owner "root"
-      group "root"
-      mode 0755
-    end
+    if params[:use_template]
+      template "#{params[:plugin_dir]}/#{params[:name]}" do
+        source "#{params[:name]}.plugin.erb"
+        owner "root"
+        group "root"
+        cookbook "munin"
+        mode 0755
+        if params[:options].respond_to?(:has_key?)
+          variables :options => params[:options]
+        end
+      end  
+    else
+      cookbook_file "#{params[:plugin_dir]}/#{params[:name]}" do
+        cookbook "munin"
+        source "plugins/#{params[:name]}"
+        owner "root"
+        group "root"
+        mode 0755
+      end
+    end  
   end
 
   link "#{params[:plugin_config]}/#{plugin}" do
@@ -42,6 +55,17 @@ define :munin_plugin, :plugin_config => "/etc/munin/plugins", :plugin_dir => "/u
       action :delete
     end
     notifies :restart, resources(:service => "munin-node")
+  end
+  
+  if params[:conf_file]
+    cookbook_file "/etc/munin/plugin-conf.d/#{params[:name]}" do
+      cookbook "munin"
+      source "plugin_conf/#{params[:name]}"
+      owner "root"
+      group "root"
+      mode 0755
+      notifies :restart, resources(:service => "munin-node")
+    end
   end
 
 end

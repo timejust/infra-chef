@@ -1,0 +1,4 @@
+[http_response_full]
+env.domain http://www.smartdate.com
+env.url1 /
+env.url2 /pages/about

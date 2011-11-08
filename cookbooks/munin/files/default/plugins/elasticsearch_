@@ -1,0 +1,56 @@
+#!/usr/bin/python
+import urllib2, sys, os, commands
+try:
+    import json
+except ImportError:
+    import simplejson as json
+
+name = "connections"
+scrip_name = os.path.basename(__file__)
+names = []
+for n in scrip_name.replace("elasticsearch_", '').split('_'):
+  names.append(n.replace('-','_'))
+
+graph_name = '->'.join(names[:-1])
+metric_label = names[-1]
+field_name = "v" + metric_label
+
+def get_local_node_id():
+  server_info = urllib2.urlopen("http://localhost:9200/_cluster/nodes").read()
+  server_info_json = json.loads(server_info)
+  nodes = server_info_json["nodes"]
+  local_ip = commands.getoutput("ifconfig").split("\n")[1].split()[1][5:]
+  
+  for node_id in nodes.keys():
+    if local_ip in nodes[node_id]["transport_address"]:
+      return node_id
+
+local_node_id = get_local_node_id()
+
+def get_server_stats():  
+  raw = urllib2.urlopen("http://localhost:9200/_cluster/nodes/%s/stats" % local_node_id).read()
+  jsonobj = json.loads(raw)
+  return jsonobj["nodes"]
+
+def do_data():
+  node_stats = get_server_stats()
+  
+  v = node_stats[local_node_id][names[0]]
+  for metric_key in names[1:]:
+    v = v[metric_key]
+  
+  print "%s.value %s" % (field_name, v)
+  
+def do_config():
+  print "graph_title %s: %s" % (graph_name, metric_label)
+  print "graph_vlabel Total count"
+  print "graph_info Shows a specific metric for the elasticsearch instance"
+  print "graph_category Elasticsearch"
+  
+  print  "%s.label %s" % (field_name, metric_label)
+
+if __name__ == "__main__":
+  if len(sys.argv) > 1 and sys.argv[1] == "config":
+      do_config()
+  else:
+      do_data()

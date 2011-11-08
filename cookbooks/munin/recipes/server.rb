@@ -2,7 +2,7 @@
 # Cookbook Name:: munin
 # Recipe:: server
 #
-# Copyright 2010-2011, Opscode, Inc.
+# Copyright 2010, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,41 +17,32 @@
 # limitations under the License.
 #
 
-munin_servers = search(:node, "munin:[* TO *] AND chef_environment:#{node.chef_environment}")
-
-if node[:public_domain]
-  case node.chef_environment
-  when "production"
-    public_domain = node[:public_domain]
-  else
-    public_domain = "#{node.chef_environment}.#{node[:public_domain]}"
-  end
-else
-  public_domain = node[:domain]
-end
-
-include_recipe "apache2"
-include_recipe "apache2::mod_auth_openid"
-include_recipe "apache2::mod_rewrite"
 include_recipe "munin::client"
+include_recipe "lighttpd"
 
 package "munin"
 
-case node[:platform]
-when "arch"
-  cron "munin-graph-html" do
-    command "/usr/bin/munin-cron"
-    user "munin"
-    minute "*/5"
+cookbook_file "/etc/cron.d/munin" do
+  source "munin-cron"
+  mode "0644"
+  owner "root"
+  group "root"
+  backup 0
+end
+
+munin_servers = search(:node, "hostname:[* TO *] AND role:#{node[:app_environment]}")
+
+Chef::Log.info("Munin SERVER environment monitoring: #{munin_servers.count}")
+
+if node[:public_domain]
+  case node[:app_environment]
+  when "production"
+    public_domain = node[:public_domain]
+  else
+    public_domain = "#{node[:app_environment]}.#{node[:public_domain]}"
   end
 else
-  cookbook_file "/etc/cron.d/munin" do
-    source "munin-cron"
-    mode "0644"
-    owner "root"
-    group "root"
-    backup 0
-  end
+  public_domain = node[:domain]
 end
 
 template "/etc/munin/munin.conf" do
@@ -60,23 +51,19 @@ template "/etc/munin/munin.conf" do
   variables(:munin_nodes => munin_servers)
 end
 
-apache_site "000-default" do
-  enable false
+bash "move_munin_dir" do
+  user "root"
+  code <<-EOH
+    mv /var/cache/munin/www/ /var/www/munin
+    chown munin.munin -R /var/www/munin
+  EOH
 end
 
-template "#{node[:apache][:dir]}/sites-available/munin.conf" do
-  source "apache2.conf.erb"
+template "/etc/munin/munin-node.conf" do
+  source "munin-node.conf.erb"
   mode 0644
-  variables :public_domain => public_domain
-  if ::File.symlink?("#{node[:apache][:dir]}/sites-enabled/munin.conf")
-    notifies :reload, resources(:service => "apache2")
-  end
+  variables :munin_servers => munin_servers
+  notifies :restart, resources(:service => "munin-node")
 end
 
-directory node['munin']['docroot'] do
-  owner "munin"
-  group "munin"
-  mode 0755
-end
 
-apache_site "munin.conf"

@@ -1,14 +1,15 @@
 maintainer        "Opscode, Inc."
 maintainer_email  "cookbooks@opscode.com"
 license           "Apache 2.0"
-description       "Installs and configures munin"
-long_description  IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version           "0.99.0"
+description       "Instsalls and configures munin"
+version           "0.9.1"
 
-depends "apache2"
-supports "arch"
 supports "debian"
 supports "ubuntu"
+
+%w{ lighttpd }.each do |cb|
+  depends cb
+end
 
 recipe "munin", "Empty, use one of the other recipes"
 recipe "munin::client", "Instlls munin and configures a client by searching for the server, which should have a role named monitoring"

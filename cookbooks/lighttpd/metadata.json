@@ -1,0 +1,29 @@
+{
+  "recipes": {
+  },
+  "suggestions": {
+  },
+  "attributes": {
+  },
+  "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES:\n\n= USAGE:\n\n",
+  "conflicting": {
+  },
+  "dependencies": {
+  },
+  "providing": {
+  },
+  "platforms": {
+  },
+  "license": "All rights reserved",
+  "maintainer": "Smartdate SA",
+  "version": "0.0.1",
+  "replacing": {
+  },
+  "maintainer_email": "administrator@smartdate.com",
+  "groupings": {
+  },
+  "name": "lighttpd",
+  "recommendations": {
+  },
+  "description": "Installs/Configures lighttpd"
+}

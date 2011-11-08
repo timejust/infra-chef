@@ -10,7 +10,7 @@ if (! eval "require LWP::UserAgent;"){
 	$ret = "LWP::UserAgent not found";
 }
 
-chomp(my $fqdn='localhost');
+chomp(my $fqdn='localhost:9999');
 
 my $URL = exists $ENV{'url'} ? $ENV{'url'} : "http://$fqdn/nginx_status";
 
