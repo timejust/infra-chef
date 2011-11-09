@@ -1,6 +1,6 @@
 #
-# Cookbook Name:: application
-# Recipe:: app-hudson
+# Cookbook Name:: tool
+# Recipe:: tool-hudson
 #
 # Description: Install the archiva, Artifact Repository Manager
 

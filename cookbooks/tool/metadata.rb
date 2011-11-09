@@ -7,6 +7,6 @@ version          "0.0.1"
 
 recipe           "tool::users", "Sets up the users to deploy the application"
 
-%w{ apt runit user deploy nginx java monit hudson }.each do |cb|
+%w{ apt runit user deploy squid nginx java monit hudson }.each do |cb|
   depends cb
 end

@@ -1,0 +1,23 @@
+{
+  "group": "proxy",
+  "server_roles": [
+    "tool-proxy"
+  ],
+  "packages": {
+	  "libxt-dev": "",
+    "libmysqlclient-dev": "",
+    "libcurl4-gnutls-dev": "",
+    "libxslt1-dev": "",
+    "libxml2-dev": "",
+    "libnotify-bin": "",
+    "curl": ""
+  },
+  "id": "tool-proxy",
+  "type": {
+    "tool-hudson": [
+      "tool-proxy"
+    ]
+  },
+  "port": "80",
+  "owner": "proxy"
+}

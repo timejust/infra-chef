@@ -69,7 +69,7 @@
       },
       "gadget": "http://staging.timejust.com:50001/gadget/timejust.xml",
       "web": "http://staging.timejust.com:50001",
-      "ratp_proxy": "http://proxy.bearstech.lan:8080/"
+      "ratp_proxy": "http://proxy.timejust.com"
     },
     "staging": {
       "api": {
@@ -79,7 +79,7 @@
       },
       "gadget": "http://staging.timejust.com/gadget/timejust.xml",
       "web": "http://staging.timejust.com",
-      "ratp_proxy": "http://proxy.bearstech.lan:8080/"
+      "ratp_proxy": "http://proxy.timejust.com"
     },
     "production": {
       "api": {
@@ -89,7 +89,7 @@
       },
       "gadget": "http://www.timejust.com/gadget/timejust.xml",
       "web": "http://www.timejust.com",
-      "ratp_proxy": "http://proxy.bearstech.lan:8080/"
+      "ratp_proxy": "http://proxy.timejust.com"
     }
   },
   "redis": {
