@@ -262,6 +262,15 @@ node.run_state[:apps].each do |current_app|
   
   end 
    
+  ## logroate
+  #logrotate_app "#{app['id']-rails}" do
+  #  path        "#{app['deploy_to']}/current/log/#{node.app_environment}.log"
+  #  postrotate  "/etc/init.d/#{app['id']} restart"
+  #  rotate      7
+  #  frequency   "weekly"
+  #  create      "644 #{app['owner']} #{app['group']}"
+  #end
+  
   ## Create cronjob to free memory.
   cron "free_memory" do
     minute    "0"

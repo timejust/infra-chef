@@ -1,6 +1,6 @@
-maintainer       "Timejust.com"
-maintainer_email "minsik.kim@timejust.com"
+maintainer       "YOUR_COMPANY_NAME"
+maintainer_email "YOUR_EMAIL"
 license          "All rights reserved"
-description      "Installs/Configures squid"
+description      "Installs/Configures sbt"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version          "0.0.1"

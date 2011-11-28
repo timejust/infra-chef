@@ -93,6 +93,6 @@ default[:hudson][:node][:ssh_host] = node[:fqdn]
 default[:hudson][:node][:ssh_port] = 22
 default[:hudson][:node][:ssh_user] = default[:hudson][:node][:user]
 default[:hudson][:node][:ssh_pass] = nil
-default[:hudson][:node][:jvm_options] = nil
+default[:hudson][:node][:jvm_options] = "-Xmx256m -Djava.awt.headless=true"
 #hudson master defaults to: "#{ENV['HOME']}/.ssh/id_rsa"
 default[:hudson][:node][:ssh_private_key] = nil

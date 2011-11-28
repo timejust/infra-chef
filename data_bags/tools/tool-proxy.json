@@ -14,7 +14,7 @@
   },
   "id": "tool-proxy",
   "type": {
-    "tool-hudson": [
+    "tool-proxy": [
       "tool-proxy"
     ]
   },

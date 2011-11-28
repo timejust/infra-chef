@@ -9,5 +9,11 @@
 package "squid package" do
    package_name "squid"
    action :install
-   notifies :start, resources(:service => "squid"), :immediately
 end
+
+service "squid" do
+  supports :status => true, :restart => true, :reload => true
+  action [ :enable, :start ]
+end
+
+

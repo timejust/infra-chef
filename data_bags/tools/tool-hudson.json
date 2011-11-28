@@ -4,8 +4,8 @@
     "tool-hudson"
   ],
   "packages": {
-	"libxt-dev": "",
-	"mysql-client": "",
+	  "libxt-dev": "",
+	  "mysql-client": "",
     "libmysqlclient-dev": "",
     "libcurl4-gnutls-dev": "",
     "libxslt1-dev": "",

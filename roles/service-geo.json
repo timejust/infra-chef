@@ -1,0 +1,14 @@
+{
+  "name": "service-geo",
+  "default_attributes": {
+  },
+  "json_class": "Chef::Role",
+  "run_list": [
+    "recipe[git]",
+    "recipe[service]"
+  ],
+  "description": "Provide apis for geo recognition and direction",
+  "chef_type": "role",
+  "override_attributes": {
+  }
+}

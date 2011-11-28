@@ -14,6 +14,7 @@ VERBOSE=yes
 # Run Jetty as this user ID (default: jetty)
 # Set this to an empty string to prevent Jetty from starting automatically
 JETTY_USER=<%= node["jetty"]["user"] %>
+#JETTY_USER=root
 
 # Listen to connections from this network host (leave empty to accept all connections)
 #Uncomment to restrict access to localhost
@@ -50,6 +51,8 @@ JETTY_TMP=<%= node["jetty"]["tmp_dir"] %>
 
 # Jetty uses a config file to setup its boot classpath
 #JETTY_START_CONFIG=/etc/jetty/start.config
+
+JETTY_HOME=<%= node["jetty"]["home"] %>
 
 # Default for number of days to keep old log files in /var/log/jetty/
 #LOGFILE_DAYS=14
