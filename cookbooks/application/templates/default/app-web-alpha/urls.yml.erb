@@ -1,12 +1,36 @@
-:<%=@environment%>:
+:development:
   :api:
-    :url: "<%=@urls['api']['url']%>"
+    :url: "<%=@urls['development']['api']['url']%>"
     :basic_auth:
-      :user: "<%=@urls['api']['user']%>"
-      :password: "<%=@urls['api']['password']%>" 
+      :user: "<%=@urls['development']['api']['user']%>"
+      :password: "<%=@urls['development']['api']['password']%>" 
   :gadget:
-    :url: "<%=@urls['gadget']%>"
+    :url: "<%=@urls['development']['gadget']%>"
   :web:
-    :url: "<%=@urls['web']%>"
+    :url: "<%=@urls['development']['web']%>"
   :ratp_proxy:
-    :url: "<%=@urls['ratp_proxy']%>"
+    :url: "<%=@urls['development']['ratp_proxy']%>"
+:staging:
+  :api:
+    :url: "<%=@urls['staging']['api']['url']%>"
+    :basic_auth:
+      :user: "<%=@urls['staging']['api']['user']%>"
+      :password: "<%=@urls['staging']['api']['password']%>" 
+  :gadget:
+    :url: "<%=@urls['staging']['gadget']%>"
+  :web:
+    :url: "<%=@urls['staging']['web']%>"
+  :ratp_proxy:
+    :url: "<%=@urls['staging']['ratp_proxy']%>"
+:production:
+  :api:
+    :url: "<%=@urls['production']['api']['url']%>"
+    :basic_auth:
+      :user: "<%=@urls['production']['api']['user']%>"
+      :password: "<%=@urls['production']['api']['password']%>" 
+  :gadget:
+    :url: "<%=@urls['production']['gadget']%>"
+  :web:
+    :url: "<%=@urls['production']['web']%>"
+  :ratp_proxy:
+    :url: "<%=@urls['production']['ratp_proxy']%>"

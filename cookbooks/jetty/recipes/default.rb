@@ -37,7 +37,7 @@ jetty_home = node["jetty"]["home"]
 jetty_log = node["jetty"]["log_dir"]
 
 execute "install jetty-hightide-8.0.0.RC0" do
-  command "sudo cp jetty-hightide-8.0.0.RC0/bin/jetty.sh /etc/init.d/jetty && sudo mkdir -p #{jetty_home} && sudo cp -R jetty-hightide-8.0.0.RC0/* #{jetty_home}/"
+  command "cp /tmp/jetty-hightide-8.0.0.RC0/bin/jetty.sh /etc/init.d/jetty && mkdir -p #{jetty_home} && cp -R /tmp/jetty-hightide-8.0.0.RC0/* #{jetty_home}/"
 end
 
 include_recipe "user"
@@ -58,12 +58,12 @@ end
 
 execute "change group and owner" do
   user "root"
-  command "sudo chown -R #{jetty_group}:#{jetty_user} #{jetty_home}"
+  command "chown -R #{jetty_group}:#{jetty_user} #{jetty_home}"
 end
 
 execute "change permissions" do
   user "root"
-  command "sudo chmod -R ugo+rw #{jetty_home} && sudo mkdir -p #{jetty_log} && sudo chown jetty #{jetty_log} -R"
+  command "chmod -R ugo+rw #{jetty_home} && mkdir -p #{jetty_log} && chown jetty #{jetty_log} -R"
 end
 
 template "/etc/default/jetty" do

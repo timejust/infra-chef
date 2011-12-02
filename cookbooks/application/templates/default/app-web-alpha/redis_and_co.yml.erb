@@ -1,9 +1,32 @@
-:<%=@environment%>:
- :redis:
-   :server:
-     :host: <%=@host%>
-     :port: <%=@port%>
-     :namespace: <%=@namespace%>
-   :services:
-     :resque:
-       :namespace: <%=@resque_namespace%>
+:development:
+  :redis:
+    :server:
+      :host: <%=@redis['development']['host']%>
+      :port: <%=@redis['development']['port']%>
+      :namespace: <%=@redis['development']['namespace']%>
+    :services:
+      :resque:
+        :namespace: <%=@redis['development']['resque_namespace']%>
+        
+:staging:
+  :redis:
+    :server:
+      :host: <%=@redis['staging']['host']%>
+      :port: <%=@redis['staging']['port']%>
+      :namespace: <%=@redis['staging']['namespace']%>
+    :services:
+      :resque:
+        :namespace: <%=@redis['staging']['resque_namespace']%>
+        
+:production:
+  :redis:
+    :server:
+      :host: <%=@redis['production']['host']%>
+      :port: <%=@redis['production']['port']%>
+      :namespace: <%=@redis['production']['namespace']%>
+    :services:
+      :resque:
+        :namespace: <%=@redis['production']['resque_namespace']%>
+
+
+

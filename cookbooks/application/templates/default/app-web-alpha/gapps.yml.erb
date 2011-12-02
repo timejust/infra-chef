@@ -9,12 +9,33 @@
     :car:
       :name: 'YellowProposal'
       :color: '#AB8B00'
-:<%=@environment%>:
+      
+:development:
   :gapps:
     :oauth:
       :for_domains:
-        :consumer_key: '<%=@gapps["domains"]["consumer_key"]%>'
-        :consumer_secret: '<%=@gapps["domains"]["consumer_secret"]%>'
+        :consumer_key: '<%=@gapps["development"]["domains"]["consumer_key"]%>'
+        :consumer_secret: '<%=@gapps["development"]["domains"]["consumer_secret"]%>'
       :for_gmail:
-        :consumer_key: '<%=@gapps["gmail"]["consumer_key"]%>'
-        :consumer_secret: '<%=@gapps["gmail"]["consumer_secret"]%>'
+        :consumer_key: '<%=@gapps["development"]["gmail"]["consumer_key"]%>'
+        :consumer_secret: '<%=@gapps["development"]["gmail"]["consumer_secret"]%>'
+        
+:staging:
+  :gapps:
+    :oauth:
+      :for_domains:
+        :consumer_key: '<%=@gapps["staging"]["domains"]["consumer_key"]%>'
+        :consumer_secret: '<%=@gapps["staging"]["domains"]["consumer_secret"]%>'
+      :for_gmail:
+        :consumer_key: '<%=@gapps["staging"]["gmail"]["consumer_key"]%>'
+        :consumer_secret: '<%=@gapps["staging"]["gmail"]["consumer_secret"]%>'
+        
+:production:
+  :gapps:
+    :oauth:
+      :for_domains:
+        :consumer_key: '<%=@gapps["production"]["domains"]["consumer_key"]%>'
+        :consumer_secret: '<%=@gapps["production"]["domains"]["consumer_secret"]%>'
+      :for_gmail:
+        :consumer_key: '<%=@gapps["production"]["gmail"]["consumer_key"]%>'
+        :consumer_secret: '<%=@gapps["production"]["gmail"]["consumer_secret"]%>'

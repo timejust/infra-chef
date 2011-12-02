@@ -1,3 +1,13 @@
-<%=@environment%>:
-  host: <%=@host%>
-  database: <%=@database%>
+development:
+  host: <%=@mongodb['development']['host']%>
+  database: <%=@mongodb['development']['database']%>
+staging:
+  host: <%=@mongodb['staging']['host']%>
+  database: <%=@mongodb['staging']['database']%>
+production:
+  host: <%=@mongodb['production']['host']%>
+  database: <%=@mongodb['production']['database']%>
+
+
+
+

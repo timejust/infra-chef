@@ -83,8 +83,12 @@
   },
   "packages": {
     "mysql-client": "",
-    "curl": ""
+    "curl": "",
+    "capistrano": ""
   },
+  "gems": {
+    "bundler": ""    
+  },  
   "authorized_keys": {
     "production": {
       "key": "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAvvA/47cW9VduJPUZZKx/WhRyxmHnkyBQaCajNOaJvUbFTAJDgP1LWTqqfnBVCqAJN/iiw77XokpErG+j+7VxPl9gRU8v0PBw+EZ5jly312N5UddrS2UeN3KygVkI8WNtdrS6FAxEwmvWMlxaDyvEDKO4MOuIOTHypDqH+xVNH5Xbaz2gX/wlTQZshO2v7NGCWbEI+49twP2x4CPImWagHZE5aW2uTz2tYYQ3hxmBCguMIh6BTKe9k2kHqnZ+PJRFwoTeTZj5aIY/oja+QHw32g+9mT70llRit2xWfs3FdHBfTu40WZSeA1zWQbDAT8X5VkqIeW+7Ktfb6ULAGDPFpw== github@timejust.com"

@@ -22,6 +22,17 @@ node.run_state[:services].each do |current_service|
     end
   end
 
+  ## Next, install any application specific gems
+  if service['gems']
+    service['gems'].each do |gem,ver|
+      gem_package gem do
+        action :install
+        version ver if ver && ver.length > 0
+        #not_if "sleep 10000", :timeout => 900
+      end
+    end
+  end
+
   ## Install java
   node.default[:java][:install_flavor] = service['java']['install_flavor']
   node.default[:java][:java_home] = service['java']['java_home']

@@ -28,21 +28,17 @@ node.run_state[:services].each do |current_service|
   scala_version = "#{service['build'][node.app_environment]['scala']}"
   service_version = "#{service['build'][node.app_environment]['service']}"
 
+  war_file = "#{service['id']}_#{scala_version}-#{service_version}.war"
   if node.app_environment == "development"
-    war = "#{service['deploy_to']}/target/scala_#{scala_version}/#{service['id']}_#{scala_version}-#{service_version}.war"
+    war = "#{service['deploy_to']}/target/scala_#{scala_version}/#{war_file}"
   else
-    war = "#{service['deploy_to']}/current/target/scala_#{scala_version}/#{service['id']}_#{scala_version}-#{service_version}.war"
+    war = "#{service['deploy_to']}/current/target/scala_#{scala_version}/#{war_file}"
   end
-  
-  execute "unzip jetty-hightide-8.0.0.RC0.tar.gz" do
-    user "root"
-    command "cd /tmp/ && tar xzf jetty-hightide-8.0.0.RC0.tar.gz"
-  end
-  
+    
   ### Deploy the war
-  bash "cp #{war} #{node[:jetty][:webapp_dir]}" do
+  bash "ln -sf #{war} #{node[:jetty][:webapp_dir]}/#{service['id']}.war" do
     code <<-EOH 
-    cp #{war} #{node[:jetty][:webapp_dir]}/#{service['id']}.war
+    ln -sf #{war} #{node[:jetty][:webapp_dir]}/#{service['id']}.war
     EOH
   end
   
