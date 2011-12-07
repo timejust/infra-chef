@@ -1,77 +1,32 @@
 {
   "group": "deploy",
-  "repository": "git@github.com:timejust/service-geo.git",
   "server_roles": [
-    "service-geo"
+    "database-geo-location"
   ],
-  "force": {
-    "production": false,
-    "development": false,
-    "staging": false
-  },
-  "mongodb": {
-    "development": {
-      "host": "localhost",
-      "database": "app_web_development"
-    },
-    "staging": {
-      "host": "localhost",
-      "database": "app_web_staging"
-    },
+  "databases": {
     "production": {
-      "host": "localhost",
-      "database": "app_web_production"
-    }
-  },
-  "akka": {
-    "development": {
-      "http_timeout": "5000",
-      "log_level": "DEBUG"      
-    },
-    "staging": {
-      "http_timeout": "5000",
-      "log_level": "DEBUG"      
-    },
-    "production": {
-      "http_timeout": "5000",
-      "log_level": "DEBUG"      
-    }
-  },
-  "google": {
-    "development": {
-      "geocode_api_url": "https://maps.googleapis.com/maps/api/geocode/json",
-      "place_api_url": "https://maps.googleapis.com/maps/api/place/search/json",
-      "api_key": "AIzaSyCN7jqExZDKOnQYo01Vc2zNja9d_tSQeiQ"
-    },
-    "staging": {
-      "geocode_api_url": "https://maps.googleapis.com/maps/api/geocode/json",
-      "place_api_url": "https://maps.googleapis.com/maps/api/place/search/json",
-      "api_key": "AIzaSyCN7jqExZDKOnQYo01Vc2zNja9d_tSQeiQ"
-    },
-    "production": {
-      "geocode_api_url": "https://maps.googleapis.com/maps/api/geocode/json",
-      "place_api_url": "https://maps.googleapis.com/maps/api/place/search/json",
-      "api_key": "AIzaSyCN7jqExZDKOnQYo01Vc2zNja9d_tSQeiQ"
-    }
-  },
-  "geo_databases": {
-    "production": {
+      "reconnect": "true",
       "encoding": "utf8",
       "username": "smartdate",
+      "adapter": "mysql",
       "database": "web_app_production",
       "host": "sdeuprod-recover-2.c6oluxwdcmwj.eu-west-1.rds.amazonaws.com",
       "password": "yosVububhur3"
     },
     "development": {
+      "reconnect": "true",
       "encoding": "utf8",
       "username": "root",
+      "adapter": "mysql",
       "database": "geo_location_development",
       "password": "sa",
       "host": "localhost"
     },
     "staging": {
+      "reconnect": "true",
       "encoding": "utf8",
       "username": "root",
+      "adapter": "mysql",
       "database": "geo_location_staging",
       "host": "localhost",
       "password": "staging"
@@ -96,18 +51,11 @@
       "key": "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAvvA/47cW9VduJPUZZKx/WhRyxmHnkyBQaCajNOaJvUbFTAJDgP1LWTqqfnBVCqAJN/iiw77XokpErG+j+7VxPl9gRU8v0PBw+EZ5jly312N5UddrS2UeN3KygVkI8WNtdrS6FAxEwmvWMlxaDyvEDKO4MOuIOTHypDqH+xVNH5Xbaz2gX/wlTQZshO2v7NGCWbEI+49twP2x4CPImWagHZE5aW2uTz2tYYQ3hxmBCguMIh6BTKe9k2kHqnZ+PJRFwoTeTZj5aIY/oja+QHw32g+9mT70llRit2xWfs3FdHBfTu40WZSeA1zWQbDAT8X5VkqIeW+7Ktfb6ULAGDPFpw== github@timejust.com"
     }
   },
-  "id": "service-geo",
+  "id": "database-geo-location",
   "type": {
-    "service-geo": [
-      "users",
-      "scala-service",
-      "service-geo"
+    "database-geo-location": [
+      "geo-location"
     ]
-  },
-  "revision": {
-    "production": "production",
-    "development": "master",
-    "staging": "staging"
   },
   "deployment": {
     "production": {
@@ -120,25 +68,21 @@
       "deploy_key": "-----BEGIN RSA PRIVATE KEY-----\nMIIEogIBAAKCAQEAvvA/47cW9VduJPUZZKx/WhRyxmHnkyBQaCajNOaJvUbFTAJD\ngP1LWTqqfnBVCqAJN/iiw77XokpErG+j+7VxPl9gRU8v0PBw+EZ5jly312N5Uddr\nS2UeN3KygVkI8WNtdrS6FAxEwmvWMlxaDyvEDKO4MOuIOTHypDqH+xVNH5Xbaz2g\nX/wlTQZshO2v7NGCWbEI+49twP2x4CPImWagHZE5aW2uTz2tYYQ3hxmBCguMIh6B\nTKe9k2kHqnZ+PJRFwoTeTZj5aIY/oja+QHw32g+9mT70llRit2xWfs3FdHBfTu40\nWZSeA1zWQbDAT8X5VkqIeW+7Ktfb6ULAGDPFpwIBIwKCAQAgu3iqsawqDvzwZIgC\noTpnNrSXCXgn2adiT8Q09FIgcog46nH42vb5WoOgpYrr4OujMfAETJn+kGOLRlag\nLbukSt1Ntc2uyiH+rP7lNHdJfsRXLD5HcGuUeg/46rETcCFkzoZMlGOPCywIoh4R\nOrPk6N2/PlHd604qyDSRcV2tpF0R79zsdZyXE/ASilCg1g1gNXP2TSC492qALoBL\nHjyzY9au45TkCKOLpar7zqRGfNktHvHePMO/dFqrO5vP7FPUkZb8vskMp+nFbRxx\nhj4OCoBM1nQi+HqBnKP4h5p0BLdKnM2bIAtQtnSiAlzPszn6zB/EHiRHPpa6vxxK\nXPAbAoGBAPT+kydsF/mDFruUeIX89ThQnSKa6GGojHQhgD6mNk+ow052l/tukSRY\ntwd/R7eQN5FLc0ErZJMHB746Y7Jd0cZlESqf/zigjF2wUa+k4ONU3gy4CiGeq6JP\nqEOZkxoXXx/q0mHAzKM0srJO4QVE79uSlV6FKL+NxiU56LCB+jRVAoGBAMeECJrl\n4MUDULiETlOa+6atMWyZOnfheKXS6Z2SVUOzsjFL+3kDz3mvhsqgRwsz+7KkzBKQ\n4LSvj+Mz4b73NUEFd8LrQNao0Q5Hkz4FYZUzScR2UdgrqfXJB6u7ePu4SxIw3niP\n4mN31yZBwfL560uMuRtRlyf9efIYqeqPG24LAoGBAKD/ED56O6P3DvBLn6iBqHV2\nzakGtfcIXExQh3mgbNVDBABcj8J727jMlYiVeEVtZlgqRGynfJsh4IRSQYPXQLWS\n32UnT/IDGmlz3ehzqbn18QELOduUJ6UtCCxsPBh1wirqxMPlGMMFX3x8+kVKjv4B\nPZXiedz2xAnVmOkE9OCPAoGAZpusp27on9XRvfrmdCPR4LDXlu+3q14DiHsZDzVQ\na/YD3taelgH1rEukaDUr2eA4TT7PWgFdnsCwZjfwcNboMBFwyqTfhFbR6hYud6r+\n/EZDMdZzO/ky1izfX6I+OFAmm6QapGdBOnglgWOlkubuCZjUOe9yTxSlHWvFGYtt\nMUcCgYEA1FE/jDSeWnsEyXfpwORd0BnNQ1iQdMBZMKknw4UFH8ipzJ64ynZZ2Ajv\nZFA4WCaH6J2eAgK+RL2WT1Oe2KJK3Fhh8Yb7aQ3ywLWRTfHzUZIg7UJb6pqeZQDa\nVWWF6VCQad72ucllMn3cMAkEoKxNqUKaWrNoQxWoFndUmO5vMjg=\n-----END RSA PRIVATE KEY-----"
     }
   },
-  "build" : {
-    "development": {
-      "scala":"2.9.1",
-      "service":"1.0"
-    },
-    "staging": {
-      "scala":"2.9.1",
-      "service":"1.0"
-    },
-    "production": {
-      "scala":"2.9.1",
-      "service":"1.0"
-    }
-  },
   "owner": "deploy",
-  "deploy_to": "/opt/timejust/service-geo",
-  "java": {
-    "install_flavor": "sun",
-    "java_home": "/usr/lib/jvm/java-6-sun"
+  "mysql_repl_password": {
+    "development": "sa",
+    "staging": "staging"
+  },
+  "database_master_role": [
+    "database-geo-location"
+  ],
+  "mysql_root_password": {
+    "development": "sa",
+    "staging": "staging"
+  },
+  "mysql_debian_password": {
+    "development": "sa",
+    "staging": "staging"
   }
 }
 

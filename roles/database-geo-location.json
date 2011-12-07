@@ -1,0 +1,13 @@
+{
+  "name": "database-geo-location",
+  "default_attributes": {
+  },
+  "json_class": "Chef::Role",
+  "run_list": [
+    "recipe[database::geo-location]"
+  ],
+  "description": "Provide geo location database",
+  "chef_type": "role",
+  "override_attributes": {
+  }
+}

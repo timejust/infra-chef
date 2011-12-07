@@ -1,0 +1,11 @@
+# Necessary for nginx status monitoring 
+server {
+      listen 127.0.0.1:9999;
+      server_name status;
+      location /nginx_status {
+              stub_status on;
+              access_log   off;
+              allow 127.0.0.1;
+              deny all;
+      }
+}

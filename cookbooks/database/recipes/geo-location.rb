@@ -27,14 +27,14 @@
 db_info = Hash.new
 root_pw = String.new
 
-search(:services) do |app|
+search(:databases) do |app|
   (app['database_master_role'] & node.run_list.roles).each do |dbm_role|
     %w{ root repl debian }.each do |user|
       user_pw = app["mysql_#{user}_password"]
       if !user_pw.nil? and user_pw[node.app_environment]
-        Chef::Log.debug("Saving password for #{user} as node attribute node['mysql']['server_#{user}_password'")
         node.set['mysql']["server_#{user}_password"] = user_pw[node.app_environment]
         node.save
+        Chef::Log.debug("Saving password for #{user} as node attribute #{user_pw[node.app_environment]}")
       else
         log "A password for MySQL user #{user} was not found in DataBag 'services' item '#{app["id"]}' for environment ' for #{node.app_environment}'." do
           level :warn
@@ -67,7 +67,7 @@ end
 
 connection_info = {:host => "localhost", :username => 'root', :password => node['mysql']['server_root_password']}
 
-search(:services) do |app|
+search(:databases) do |app|
   (app['database_master_role'] & node.run_list.roles).each do |dbm_role|
     app['databases'].each do |env,db|
       if env =~ /#{node.app_environment}/
@@ -87,5 +87,29 @@ search(:services) do |app|
         end
       end
     end
+  end
+end
+
+search(:databases) do |app|
+  next unless app["type"]["database-geo-location"].include? "geo-location"
+
+  # download geo location database file from download.timejust.com/geo_location.sql
+  remote_file "/tmp/geo_location.tar.gz" do
+    source "http://download.timejust.com/geo_location.tar.gz"
+    mode "0644"
+    owner "root"
+    group "root"
+    not_if { File.exists?("/tmp/geo_location.tar.gz") }
+  end
+  
+  bash "untar and import geo_location" do
+    Chef::Log.info("mysql -u #{app["databases"][node.app_environment]['username']} -p#{app['databases'][node.app_environment]['password']} #{app['databases'][node.app_environment]['database']} < geo_location.sql")
+    cwd "/tmp"
+    user "root"
+    code <<-EOH
+      tar -zxf geo_location.tar.gz
+      chown root:root geo_location.sql
+      mysql -u #{app["databases"][node.app_environment]['username']} -p#{app['databases'][node.app_environment]['password']} #{app['databases'][node.app_environment]['database']} < geo_location.sql
+    EOH
   end
 end

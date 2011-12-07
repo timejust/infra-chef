@@ -1,0 +1,23 @@
+{
+  "group": "download",
+  "server_roles": [
+    "tool-download"
+  ],
+  "packages": {
+	  "libxt-dev": "",
+    "libmysqlclient-dev": "",
+    "libcurl4-gnutls-dev": "",
+    "libxslt1-dev": "",
+    "libxml2-dev": "",
+    "libnotify-bin": "",
+    "curl": ""
+  },
+  "id": "tool-download",
+  "type": {
+    "tool-download": [
+      "tool-download"
+    ]
+  },
+  "port": "80",
+  "owner": "download"
+}

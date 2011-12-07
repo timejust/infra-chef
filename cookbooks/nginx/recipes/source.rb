@@ -5,7 +5,7 @@
 # Author:: Adam Jacob (<adam@opscode.com>)
 # Author:: Joshua Timberman (<joshua@opscode.com>)
 #
-# Copyright 2009-2011, Opscode, Inc.
+# Copyright 2009, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ end
 
 packages = value_for_platform(
     ["centos","redhat","fedora"] => {'default' => ['pcre-devel', 'openssl-devel']},
-    "default" => ['libpcre3', 'libpcre3-dev', 'libssl-dev']
+    "default" => ['libpcre3', 'libpcre3-dev', 'libssl-dev', 'geoip-bin', 'libgeoip-dev', 'libgeoip1']
   )
 
 packages.each do |devpkg|
@@ -36,29 +36,31 @@ packages.each do |devpkg|
 end
 
 nginx_version = node[:nginx][:version]
-
-node.set[:nginx][:install_path]    = "/opt/nginx-#{nginx_version}"
-node.set[:nginx][:src_binary]      = "#{node[:nginx][:install_path]}/sbin/nginx"
-node.set[:nginx][:daemon_disable]  = true
-node.set[:nginx][:configure_flags] = [
-  "--prefix=#{node[:nginx][:install_path]}",
-  "--conf-path=#{node[:nginx][:dir]}/nginx.conf",
-  "--with-http_ssl_module",
-  "--with-http_gzip_static_module"
-]
-
 configure_flags = node[:nginx][:configure_flags].join(" ")
+node.set[:nginx][:daemon_disable] = true
 
-remote_file "#{Chef::Config[:file_cache_path]}/nginx-#{nginx_version}.tar.gz" do
+remote_file "/tmp/nginx-#{nginx_version}.tar.gz" do
   source "http://sysoev.ru/nginx/nginx-#{nginx_version}.tar.gz"
   action :create_if_missing
 end
 
-bash "compile_nginx_source" do
-  cwd Chef::Config[:file_cache_path]
+# Additional modules.
+remote_file "/tmp/nginx-upstream-jvm-route-#{node[:nginx][:jvm_route_version]}.tar.gz" do
+  source "http://nginx-upstream-jvm-route.googlecode.com/files/nginx-upstream-jvm-route-#{node[:nginx][:jvm_route_version]}.tar.gz"
+  action :create_if_missing
+end
+ 
+Chef::Log.info("******************* raw ./configure #{node[:nginx][:configure_flags]}")
+Chef::Log.info("******************* ./configure #{configure_flags}")
+
+bash "compile_nginx_source" do  
+  cwd "/tmp"
   code <<-EOH
     tar zxf nginx-#{nginx_version}.tar.gz
-    cd nginx-#{nginx_version} && ./configure #{configure_flags}
+    tar zxf nginx-upstream-jvm-route-#{node[:nginx][:jvm_route_version]}.tar.gz
+    cd nginx-#{nginx_version}
+    patch -p0 < ../nginx_upstream_jvm_route/jvm_route.patch
+    ./configure #{configure_flags} --add-module=../nginx_upstream_jvm_route
     make && make install
   EOH
   creates node[:nginx][:src_binary]
@@ -70,43 +72,21 @@ directory node[:nginx][:log_dir] do
   action :create
 end
 
+## logroate
+
+logrotate_app "nginx" do
+  path        "#{node[:nginx][:log_dir]}/*.log"
+  postrotate  "/etc/init.d/nginx restart"
+  rotate      30
+  frequency   "daily"
+  create      "644 root root"
+end
+
 directory node[:nginx][:dir] do
   owner "root"
   group "root"
   mode "0755"
 end
-
-unless platform?("centos","redhat","fedora")
-  runit_service "nginx"
-
-  service "nginx" do
-    subscribes :restart, resources(:bash => "compile_nginx_source")
-  end
-else
-  #install init db script
-  template "/etc/init.d/nginx" do
-    source "nginx.init.erb"
-    owner "root"
-    group "root"
-    mode "0755"
-  end
-
-  #install sysconfig file (not really needed but standard)
-  template "/etc/sysconfig/nginx" do
-    source "nginx.sysconfig.erb"
-    owner "root"
-    group "root"
-    mode "0644"
-  end
-
-  #register service
-  service "nginx" do
-    supports :status => true, :restart => true, :reload => true
-    action :enable
-    subscribes :restart, resources(:bash => "compile_nginx_source")
-  end
-end
-
 
 %w{ sites-available sites-enabled conf.d }.each do |dir|
   directory "#{node[:nginx][:dir]}/#{dir}" do
@@ -131,7 +111,6 @@ template "nginx.conf" do
   owner "root"
   group "root"
   mode "0644"
-  notifies :restart, resources(:service => "nginx"), :immediately
 end
 
 cookbook_file "#{node[:nginx][:dir]}/mime.types" do
@@ -139,5 +118,52 @@ cookbook_file "#{node[:nginx][:dir]}/mime.types" do
   owner "root"
   group "root"
   mode "0644"
-  notifies :restart, resources(:service => "nginx"), :immediately
+end
+
+# install stub-status server for monitoring
+template "#{node[:nginx][:dir]}/sites-available/stub-status.conf" do
+  Chef::Log.info("Nginx monitoring")
+  source "stub-status.conf.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+end
+
+
+unless platform?("centos","redhat","fedora")
+  runit_service "nginx"
+
+  service "nginx" do
+    supports :status => true, :restart => true, :reload => true
+    subscribes :restart, resources(:bash => "compile_nginx_source")
+    subscribes :restart, resources(:template => "nginx.conf")
+    subscribes :restart, resources(:cookbook_file => "#{node[:nginx][:dir]}/mime.types")
+  end
+  
+  nginx_site "stub-status.conf" do
+    notifies :restart, resources(:service => "nginx")
+  end
+  
+else
+  #install init db script
+  template "/etc/init.d/nginx" do
+    source "nginx.init.erb"
+    owner "root"
+    group "root"
+    mode "0755"
+  end
+
+  #install sysconfig file (not really needed but standard)
+  template "/etc/sysconfig/nginx" do
+    source "nginx.sysconfig.erb"
+    owner "root"
+    group "root"
+    mode "0644"
+  end
+
+  #register service
+  service "nginx" do
+    action :enable
+    subscribes :restart, resources(:bash => "compile_nginx_source")
+  end
 end

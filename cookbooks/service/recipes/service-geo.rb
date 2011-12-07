@@ -14,16 +14,28 @@ node.run_state[:services].each do |current_service|
   next unless current_service[:recipes].include? "service-geo"
 
   service = current_service[:service]
+  
+  # Create service config file
+  template "#{node[:jetty][:home]}/resources/#{service['id']}.conf" do
+    path        "#{node[:jetty][:home]}/resources/#{service['id']}.conf"
+    source      "service-geo/service-geo.conf.erb"
+    owner       "jetty"
+    group       "jetty"
+    mode        0644
+    variables   :akka => service[:akka][node.app_environment], 
+                :google => service[:google][node.app_environment], 
+                :geo_database => service[:geo_databases][node.app_environment]
+  end
     
-  # Create .prop file
-  # template "#{node[:jetty][:home]}/conf/#{node.app_environment}.app.props" do
-  #   path        "#{node[:jetty][:home]}/resources/#{node.app_environment}.app.props"
-  #   source      "service-geo/service.props.erb"
-  #   owner       "root"
-  #   group       "root"
-  #   mode        0644
-  #   variables   :props => service['props'][node.app_environment]
-  # end
+  # Replace jetty.conf file with customized conf file.
+  template "#{node[:jetty][:home]}/etc/jetty.conf" do
+    path        "#{node[:jetty][:home]}/etc/jetty.conf"
+    source      "service-geo/jetty.conf.erb"
+    owner       "jetty"
+    group       "jetty"
+    mode        0644
+    variables   :akka_conf => "#{node[:jetty][:home]}/resources/#{service['id']}.conf"
+  end
   
   scala_version = "#{service['build'][node.app_environment]['scala']}"
   service_version = "#{service['build'][node.app_environment]['service']}"
@@ -36,9 +48,9 @@ node.run_state[:services].each do |current_service|
   end
     
   ### Deploy the war
-  bash "ln -sf #{war} #{node[:jetty][:webapp_dir]}/#{service['id']}.war" do
+  bash "cp #{node[:jetty][:webapp_dir]}/#{service['id']}.war #{war}" do
     code <<-EOH 
-    ln -sf #{war} #{node[:jetty][:webapp_dir]}/#{service['id']}.war
+    cp #{node[:jetty][:webapp_dir]}/#{service['id']}.war #{war} 
     EOH
   end
   

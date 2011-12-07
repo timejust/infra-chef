@@ -1,0 +1,13 @@
+{
+  "name": "datastore-mysql",
+  "default_attributes": {
+  },
+  "json_class": "Chef::Role",
+  "run_list": [
+    "recipe[database::master]"
+  ],
+  "description": "Master database role, for development only",
+  "chef_type": "role",
+  "override_attributes": {
+  }
+}

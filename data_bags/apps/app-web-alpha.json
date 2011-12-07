@@ -202,7 +202,7 @@
     },
     "development": {
       "hostname": "app-web.local",
-      "set_real_ip_from": "192.168.56.1",
+      "set_real_ip_from": "192.168.15.1",
       "port": "80",
       "access_list": "app-web-alpha-blacklist.conf",
       "use_geoip": "true",

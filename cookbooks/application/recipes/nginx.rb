@@ -24,10 +24,19 @@ node.run_state[:apps].each do |current_app|
 
   #ssl = !(app['site'][node.app_environment]['ssl_crt'].nil?)
 
+  node[:nginx][:configure_flags] = [
+      "--prefix=#{node[:nginx][:install_path]}",
+      "--conf-path=#{node[:nginx][:dir]}/nginx.conf",
+      "--with-http_ssl_module",
+      "--with-http_gzip_static_module",
+      "--with-http_realip_module",
+      "--with-http_stub_status_module",
+      "--with-http_geoip_module"
+    ]
+  
   include_recipe "nginx::source"
   
   Chef::Log.info("Installing Nginx Configuration for #{app['id']}")
-  
   
   template "#{node[:nginx][:dir]}/sites-available/#{app['id']}.conf" do
     source "nginx/#{app['id']}.conf.erb"
@@ -123,13 +132,13 @@ node.run_state[:apps].each do |current_app|
     end
   end
   
-  # create restiction list
-  #if app['site'][node.app_environment]['use_geoip']
-  #  geoip app['id'] do
-  #    geoip_database_location       "/usr/share/GeoIP"
-  #    geoip_database                "GeoIPCity.dat"
-  #  end
-  #end
+  # create plugin for using nginx geoip module
+  if app['site'][node.app_environment]['use_geoip']
+    geoip app['id'] do
+      geoip_database_location       "/usr/share/GeoIP"
+      geoip_database                "GeoIPCity.dat"
+    end
+  end
   
   ## Setup monitoring
   %w(
