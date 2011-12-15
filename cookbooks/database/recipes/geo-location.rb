@@ -50,6 +50,20 @@ search(:databases) do |app|
   end
 end
 
+search(:databases) do |app|
+  next unless app["type"]["database-geo-location"].include? "geo-location"
+
+  ## Next, install any application specific gems
+  if app['gems']
+    app['gems'].each do |gem,ver|
+      gem_package gem do
+        action :install
+        version ver if ver && ver.length > 0
+      end
+    end
+  end
+end
+
 include_recipe "mysql::server"
 
 template "/etc/mysql/grants.sql" do

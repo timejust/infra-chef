@@ -18,7 +18,7 @@ node.run_state[:services].each do |current_service|
   # Create service config file
   template "#{node[:jetty][:home]}/resources/#{service['id']}.conf" do
     path        "#{node[:jetty][:home]}/resources/#{service['id']}.conf"
-    source      "service-geo/service-geo.conf.erb"
+    source      "service-geo/akka.conf.erb"
     owner       "jetty"
     group       "jetty"
     mode        0644
@@ -26,11 +26,11 @@ node.run_state[:services].each do |current_service|
                 :google => service[:google][node.app_environment], 
                 :geo_database => service[:geo_databases][node.app_environment]
   end
-    
-  # Replace jetty.conf file with customized conf file.
-  template "#{node[:jetty][:home]}/etc/jetty.conf" do
-    path        "#{node[:jetty][:home]}/etc/jetty.conf"
-    source      "service-geo/jetty.conf.erb"
+  
+  # Replace start.ini file with customized conf file.
+  template "#{node[:jetty][:home]}/start.ini" do
+    path        "#{node[:jetty][:home]}/start.ini"
+    source      "service-geo/start.ini.erb"
     owner       "jetty"
     group       "jetty"
     mode        0644
@@ -48,9 +48,9 @@ node.run_state[:services].each do |current_service|
   end
     
   ### Deploy the war
-  bash "cp #{node[:jetty][:webapp_dir]}/#{service['id']}.war #{war}" do
+  bash "cp #{war} #{node[:jetty][:webapp_dir]}/#{service['id']}.war" do
     code <<-EOH 
-    cp #{node[:jetty][:webapp_dir]}/#{service['id']}.war #{war} 
+    cp #{war} #{node[:jetty][:webapp_dir]}/#{service['id']}.war 
     EOH
   end
   

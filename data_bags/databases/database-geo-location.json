@@ -38,7 +38,8 @@
     "capistrano": ""
   },
   "gems": {
-    "bundler": ""    
+    "bundler": "",
+    "mysql": ""    
   },  
   "authorized_keys": {
     "production": {

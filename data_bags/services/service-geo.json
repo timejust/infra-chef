@@ -25,16 +25,16 @@
   },
   "akka": {
     "development": {
-      "http_timeout": "5000",
-      "log_level": "DEBUG"      
+      "http_timeout": "10000",
+      "log_level": "INFO"      
     },
     "staging": {
-      "http_timeout": "5000",
-      "log_level": "DEBUG"      
+      "http_timeout": "10000",
+      "log_level": "INFO"      
     },
     "production": {
-      "http_timeout": "5000",
-      "log_level": "DEBUG"      
+      "http_timeout": "10000",
+      "log_level": "INFO"      
     }
   },
   "google": {
@@ -67,13 +67,13 @@
       "username": "root",
       "database": "geo_location_development",
       "password": "sa",
-      "host": "localhost"
+      "host": "localhost:3306"
     },
     "staging": {
       "encoding": "utf8",
       "username": "root",
       "database": "geo_location_staging",
-      "host": "localhost",
+      "host": "localhost:3306",
       "password": "staging"
     }
   },
