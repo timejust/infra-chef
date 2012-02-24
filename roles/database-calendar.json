@@ -1,14 +1,13 @@
 {
-  "name": "tool-proxy",
+  "name": "database-calendar",
   "default_attributes": {
   },
   "json_class": "Chef::Role",
   "run_list": [
-    "recipe[tool]"
+    "recipe[database::calendar]"
   ],
-  "description": "Web proxy server",
+  "description": "Provide calendar database",
   "chef_type": "role",
   "override_attributes": {
   }
 }
-

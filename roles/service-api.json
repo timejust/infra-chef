@@ -1,14 +1,14 @@
 {
-  "name": "tool-proxy",
+  "name": "service-api",
   "default_attributes": {
   },
   "json_class": "Chef::Role",
   "run_list": [
-    "recipe[tool]"
+    "recipe[git]",
+    "recipe[service]"
   ],
-  "description": "Web proxy server",
+  "description": "Api Services Role",
   "chef_type": "role",
   "override_attributes": {
   }
 }
-

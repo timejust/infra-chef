@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: tool
+# Cookbook Name:: rails
 # Recipe:: default
 #
-# Copyright 2011, timejust.com
+# Copyright 2009, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,23 +17,15 @@
 # limitations under the License.
 #
 
-include_recipe "apt"
+include_recipe "ruby"
 
-
-node.run_state[:tools] = []
-
-search(:tools) do |tool|
-  (tool["server_roles"] & node.run_list.roles).each do |tool_role|
-    node.run_state[:tools] << {:tool => tool, :recipes => tool["type"][tool_role]}
+%w{ rails actionmailer actionpack activerecord activesupport activeresource }.each do |rails_gem|
+  gem_package rails_gem do
+    if node[:rails][:version]
+      version node[:rails][:version]
+      action :install
+    else
+      action :install
+    end
   end
 end
-
-node.run_state[:tools].map {|a| a[:recipes]}.flatten.each do |recipe|
-  ## Do this so that different databaags with the same recipe can run
-  node.run_state[:seen_recipes].delete("tool::#{recipe}")
-  include_recipe "tool::#{recipe}"
-end
-
-
-node.run_state.delete(:tools)
-

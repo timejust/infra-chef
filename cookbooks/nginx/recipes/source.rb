@@ -40,7 +40,7 @@ configure_flags = node[:nginx][:configure_flags].join(" ")
 node.set[:nginx][:daemon_disable] = true
 
 remote_file "/tmp/nginx-#{nginx_version}.tar.gz" do
-  source "http://sysoev.ru/nginx/nginx-#{nginx_version}.tar.gz"
+  source "http://nginx.org/download/nginx-#{nginx_version}.tar.gz"
   action :create_if_missing
 end
 

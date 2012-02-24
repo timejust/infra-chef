@@ -24,12 +24,22 @@ node.run_state[:apps].each do |current_app|
 
   include_recipe "user"
   
+  # Hack here because we might install web_app and hudson in same machine
+  # and we're using same uid and gid for both account. We should avoid to
+  # do it.
+  uid = 1001
+  gid = 1001  
+  unless node.hudson == nil
+    uid = 1009
+    gid = 1009
+  end
+  
   unless node.app_environment == "development"
     user_create "deploy user" do
       owner   app['owner']
       group   app['group']
-      uid     1001
-      gid     1001
+      uid     uid
+      gid     gid
       comment "Application deploy user"
     end
 

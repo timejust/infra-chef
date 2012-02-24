@@ -1,5 +1,5 @@
 #
-# Author:: Joshua Timberman (<joshua@opscode.com>)
+# Author:: Min Kim (<minsik.kim@timejust.com, minsikzzang@gmail.com>)
 # Cookbook Name:: database
 # Recipe:: master
 #
@@ -51,8 +51,8 @@ search(:databases) do |app|
 end
 
 search(:databases) do |app|
-  next unless app["type"].include? "database-geo-location"
-  next unless app["type"]["database-geo-location"].include? "geo-location"
+  next unless app["type"].include? "database-calendar"    
+  next unless app["type"]["database-calendar"].include? "calendar"
 
   ## Next, install any application specific gems
   if app['gems']
@@ -106,26 +106,24 @@ search(:databases) do |app|
 end
 
 search(:databases) do |app|
-  next unless app["type"].include? "database-geo-location"  
-  next unless app["type"]["database-geo-location"].include? "geo-location"
+  next unless app["type"].include? "database-calendar"  
+  next unless app["type"]["database-calendar"].include? "calendar"
 
-  # download geo location database file from download.timejust.com/geo_location.sql
-  remote_file "/tmp/geo_location.tar.gz" do
-    source "http://download.timejust.com/geo_location.tar.gz"
-    mode "0644"
+  template "/tmp/database-calendar-scheme.sql" do
+    source "database-calendar-scheme.sql.erb"
+    cookbook "database"
     owner "root"
     group "root"
-    not_if { File.exists?("/tmp/geo_location.tar.gz") }
+    mode "0666"
+    action :create
   end
-  
-  bash "untar and import geo_location" do
-    Chef::Log.info("mysql -u #{app["databases"][node.app_environment]['username']} -p#{app['databases'][node.app_environment]['password']} #{app['databases'][node.app_environment]['database']} < geo_location.sql")
+
+  bash "creating calendar tables" do
+    Chef::Log.info("mysql -u #{app["databases"][node.app_environment]['username']} -p#{app['databases'][node.app_environment]['password']} #{app['databases'][node.app_environment]['database']} < database-calendar-scheme.sql")
     cwd "/tmp"
     user "root"
     code <<-EOH
-      tar -zxf geo_location.tar.gz
-      chown root:root geo_location.sql
-      mysql -u #{app["databases"][node.app_environment]['username']} -p#{app['databases'][node.app_environment]['password']} #{app['databases'][node.app_environment]['database']} < geo_location.sql
+      mysql -u #{app["databases"][node.app_environment]['username']} -p#{app['databases'][node.app_environment]['password']} #{app['databases'][node.app_environment]['database']} < database-calendar-scheme.sql
     EOH
   end
 end

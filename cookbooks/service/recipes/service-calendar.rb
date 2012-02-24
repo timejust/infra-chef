@@ -11,26 +11,27 @@ include_recipe "deploy"
 include_recipe "apt"
 
 node.run_state[:services].each do |current_service|
-  next unless current_service[:recipes].include? "service-geo"
+  next unless current_service[:recipes].include? "service-calendar"
 
   service = current_service[:service]
   
   # Create service config file
   template "#{node[:jetty][:home]}/resources/#{service['id']}.conf" do
     path        "#{node[:jetty][:home]}/resources/#{service['id']}.conf"
-    source      "service-geo/akka.conf.erb"
+    source      "service-calendar/akka.conf.erb"
     owner       "jetty"
     group       "jetty"
     mode        0644
     variables   :akka => service[:akka][node.app_environment], 
                 :google => service[:google][node.app_environment], 
-                :geo_database => service[:geo_databases][node.app_environment]
+                :redis => service[:redis][node.app_environment], 
+                :calendar_database => service[:calendar_databases][node.app_environment]
   end
   
   # Replace start.ini file with customized conf file.
   template "#{node[:jetty][:home]}/start.ini" do
     path        "#{node[:jetty][:home]}/start.ini"
-    source      "service-geo/start.ini.erb"
+    source      "service-calendar/start.ini.erb"
     owner       "jetty"
     group       "jetty"
     mode        0644

@@ -1,6 +1,6 @@
-###########################
-# Service-Geo Config File #
-###########################
+################################
+# Service-Calendar Config File #
+################################
 
 # This file has all the default settings, so all these could be removed with no visible effect.
 # Modify as needed.
@@ -51,29 +51,31 @@ akka {
   }
 }
 
-google {
-  geocode-api-url = "<%=@google[:geocode_api_url]%>"
-  place-api-url = "<%=@google[:place_api_url]%>"
-  api-key = "<%=@google[:api_key]%>"  
+service-calendar {
+  calendar-db {
+    host = "<%=@calendar_database[:host]%>"
+    database = "<%=@calendar_database[:database]%>"
+    username = "<%=@calendar_database[:username]%>"
+    password = "<%=@calendar_database[:password]%>"
+    encoding = "<%=@calendar_database[:encoding]%>"
+  }  
 }
 
-service-geo {
-  geo-location-db {
-    host = "<%=@geo_database[:host]%>"
-    database = "<%=@geo_database[:database]%>"
-    username = "<%=@geo_database[:username]%>"
-    password = "<%=@geo_database[:password]%>"
-    encoding = "<%=@geo_database[:encoding]%>"
-  }  
-  
-  direction {
-    plugins {
-      names = ["locomote", "ratp"]
-      options = ["on", "off"]
-      sources = ["position", "address"]
-      
-      # For plugin dynamic load => not yet implemented
-      # classes = ["com.timejust.service.lib.locomote.Location", "com.timejust.service.lib.ratp.Itinerary"]      
-    }    
+service-ga {
+  indexer {
+    prefix = "com.timejust.ga.index" 
+    redis {
+      host = "<%=@redis[:host]%>"
+      port = "<%=@redis[:port]%>"
+    }
   }
 }
+
+isokron {
+  timetag-api-url = "http://dev.isokron.com/1/timetag.json"
+  direction-api-url = "http://dev.isokron.com/1/directions.json"
+  api-key = "R6Frafre426seyUch8wufrak"
+  api-key-direction = "TSFEkeeXKW0DSBjA9npa"
+}
+
+

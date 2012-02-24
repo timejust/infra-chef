@@ -1,12 +1,13 @@
 {
-  "name": "tool-proxy",
+  "name": "production",
   "default_attributes": {
+    "app_environment": "production"
   },
   "json_class": "Chef::Role",
   "run_list": [
-    "recipe[tool]"
+
   ],
-  "description": "Web proxy server",
+  "description": "production environment role",
   "chef_type": "role",
   "override_attributes": {
   }

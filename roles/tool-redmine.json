@@ -1,12 +1,12 @@
 {
-  "name": "tool-proxy",
+  "name": "tool-redmine",
   "default_attributes": {
   },
   "json_class": "Chef::Role",
   "run_list": [
     "recipe[tool]"
   ],
-  "description": "Web proxy server",
+  "description": "Redmine is a flexible project management web application written using Ruby on Rails framework.",
   "chef_type": "role",
   "override_attributes": {
   }

@@ -1,0 +1,59 @@
+{
+  "server_roles": [
+    "service-api"
+  ],
+  "packages": {
+  },
+  "owner": "deploy",
+  "group": "deploy",
+  "nginx": {
+    "port": {
+      "api": "80"
+    }
+  },
+  "id": "service-api",
+  "type": {
+    "service-api": [
+      "users",
+      "nginx",
+      "service-api"
+    ]
+  },
+  "site": {
+    "production": {
+      "set_real_ip_from": "10.0.0.0/8",
+      "port": "80",
+      "access_list": "app-web-blacklist.conf"
+     },
+    "development": {
+      "set_real_ip_from": "192.168.56.1",
+      "access_list": "app-web-blacklist.conf"
+    },
+    "staging": {
+      "set_real_ip_from": "10.0.0.0/8",
+      "access_list": "app-web-blacklist.conf"
+    }
+  },
+  "services": {    
+    "v1": { 
+      "geo": {
+        "id": "service-geo",
+        "port": "8080",
+        "endpoint": "geo",
+        "remote_resource": "service-geo/v1/geo"
+      },
+      "calendar": {
+        "id": "service-calendar",
+        "port": "8080",
+        "endpoint": "calendar",
+        "remote_resource": "service-calendar/v1/calendar"
+      },
+      "ga": {
+        "id": "service-calendar",
+        "port": "8080",
+        "endpoint": "ga",
+        "remote_resource": "service-calendar/v1/ga"
+      }
+    }
+  }
+}

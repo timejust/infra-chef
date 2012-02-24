@@ -20,9 +20,6 @@
       "tool-hudson"
     ]
   },
-  "gems": {
-    "bundler": "1.0.21"
-  },
   "owner": "hudson",
   "port": "8000",
   "deploy_to": "/var/lib/hudson",

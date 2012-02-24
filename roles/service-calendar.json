@@ -1,14 +1,14 @@
 {
-  "name": "tool-proxy",
+  "name": "service-calendar",
   "default_attributes": {
   },
   "json_class": "Chef::Role",
   "run_list": [
-    "recipe[tool]"
+    "recipe[git]",
+    "recipe[service]"
   ],
-  "description": "Web proxy server",
+  "description": "Provide apis for timejust calendar and ga",
   "chef_type": "role",
   "override_attributes": {
   }
 }
-

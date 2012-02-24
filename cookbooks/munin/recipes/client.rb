@@ -33,12 +33,6 @@ service "munin-node" do
   action :enable
 end
 
-# Overrides the default jar with a newer version
-remote_file "/usr/share/munin/munin-jmx-plugins.jar" do
-  source "http://archiva.smartdate.com:8080/archiva/repository/internal/org/munin/munin-jmx-plugins/2.0-alpha2/munin-jmx-plugins-2.0-alpha2.jar"
-  mode 0644
-end
-
 munin_servers = search(:node, "role:monitoring-munin")
 
 template "/etc/munin/munin-node.conf" do

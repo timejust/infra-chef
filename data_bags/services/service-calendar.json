@@ -1,0 +1,144 @@
+{
+  "group": "deploy",
+  "repository": "git@github.com:timejust/service-calendar.git",
+  "server_roles": [
+    "service-calendar"
+  ],
+  "force": {
+    "production": false,
+    "development": false,
+    "staging": false
+  },
+  "akka": {
+    "development": {
+      "http_timeout": "10000",
+      "log_level": "INFO"      
+    },
+    "staging": {
+      "http_timeout": "10000",
+      "log_level": "INFO"      
+    },
+    "production": {
+      "http_timeout": "10000",
+      "log_level": "INFO"      
+    }
+  },
+  "google": {
+    "development": {
+      "geocode_api_url": "https://maps.googleapis.com/maps/api/geocode/json",
+      "place_api_url": "https://maps.googleapis.com/maps/api/place/search/json",
+      "api_key": "AIzaSyCN7jqExZDKOnQYo01Vc2zNja9d_tSQeiQ"
+    },
+    "staging": {
+      "geocode_api_url": "https://maps.googleapis.com/maps/api/geocode/json",
+      "place_api_url": "https://maps.googleapis.com/maps/api/place/search/json",
+      "api_key": "AIzaSyCN7jqExZDKOnQYo01Vc2zNja9d_tSQeiQ"
+    },
+    "production": {
+      "geocode_api_url": "https://maps.googleapis.com/maps/api/geocode/json",
+      "place_api_url": "https://maps.googleapis.com/maps/api/place/search/json",
+      "api_key": "AIzaSyCN7jqExZDKOnQYo01Vc2zNja9d_tSQeiQ"
+    }
+  },
+  "calendar_databases": {
+    "production": {
+      "encoding": "utf8",
+      "username": "smartdate",
+      "database": "web_app_production",
+      "host": "sdeuprod-recover-2.c6oluxwdcmwj.eu-west-1.rds.amazonaws.com",
+      "password": "yosVububhur3"
+    },
+    "development": {
+      "encoding": "utf8",
+      "username": "root",
+      "database": "calendar_development",
+      "password": "sa",
+      "host": "localhost:3306"
+    },
+    "staging": {
+      "encoding": "utf8",
+      "username": "root",
+      "database": "geo_location_staging",
+      "host": "localhost:3306",
+      "password": "staging"
+    }
+  },
+  "redis": {
+    "production": {
+      "host": "192.168.5.103",
+      "port": "6379"
+    },
+    "development": {
+      "host": "192.168.15.103",
+      "port": "6379"
+    },
+    "staging": {
+      "host": "redis-staging.timejust.com",
+      "port": "6379"
+    }
+  },
+  "packages": {
+    "mysql-client": "",
+    "curl": "",
+    "capistrano": ""
+  },
+  "gems": {
+    "bundler": ""    
+  },  
+  "authorized_keys": {
+    "production": {
+      "key": "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAvvA/47cW9VduJPUZZKx/WhRyxmHnkyBQaCajNOaJvUbFTAJDgP1LWTqqfnBVCqAJN/iiw77XokpErG+j+7VxPl9gRU8v0PBw+EZ5jly312N5UddrS2UeN3KygVkI8WNtdrS6FAxEwmvWMlxaDyvEDKO4MOuIOTHypDqH+xVNH5Xbaz2gX/wlTQZshO2v7NGCWbEI+49twP2x4CPImWagHZE5aW2uTz2tYYQ3hxmBCguMIh6BTKe9k2kHqnZ+PJRFwoTeTZj5aIY/oja+QHw32g+9mT70llRit2xWfs3FdHBfTu40WZSeA1zWQbDAT8X5VkqIeW+7Ktfb6ULAGDPFpw== github@timejust.com"
+    },
+    "development": {
+      "key": "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAvvA/47cW9VduJPUZZKx/WhRyxmHnkyBQaCajNOaJvUbFTAJDgP1LWTqqfnBVCqAJN/iiw77XokpErG+j+7VxPl9gRU8v0PBw+EZ5jly312N5UddrS2UeN3KygVkI8WNtdrS6FAxEwmvWMlxaDyvEDKO4MOuIOTHypDqH+xVNH5Xbaz2gX/wlTQZshO2v7NGCWbEI+49twP2x4CPImWagHZE5aW2uTz2tYYQ3hxmBCguMIh6BTKe9k2kHqnZ+PJRFwoTeTZj5aIY/oja+QHw32g+9mT70llRit2xWfs3FdHBfTu40WZSeA1zWQbDAT8X5VkqIeW+7Ktfb6ULAGDPFpw== github@timejust.com"
+    },
+    "staging": {
+      "key": "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAvvA/47cW9VduJPUZZKx/WhRyxmHnkyBQaCajNOaJvUbFTAJDgP1LWTqqfnBVCqAJN/iiw77XokpErG+j+7VxPl9gRU8v0PBw+EZ5jly312N5UddrS2UeN3KygVkI8WNtdrS6FAxEwmvWMlxaDyvEDKO4MOuIOTHypDqH+xVNH5Xbaz2gX/wlTQZshO2v7NGCWbEI+49twP2x4CPImWagHZE5aW2uTz2tYYQ3hxmBCguMIh6BTKe9k2kHqnZ+PJRFwoTeTZj5aIY/oja+QHw32g+9mT70llRit2xWfs3FdHBfTu40WZSeA1zWQbDAT8X5VkqIeW+7Ktfb6ULAGDPFpw== github@timejust.com"
+    }
+  },
+  "id": "service-calendar",
+  "type": {
+    "service-calendar": [
+      "users",
+      "scala-service",
+      "service-calendar"
+    ]
+  },
+  "revision": {
+    "production": "production",
+    "development": "master",
+    "staging": "staging"
+  },
+  "deployment": {
+    "production": {
+      "deploy_key": "-----BEGIN RSA PRIVATE KEY-----\nMIIEogIBAAKCAQEAtKSmVx7I7xf64eZHW1a7VOm0Fm4nzcMeLAlBE7FZbyWuer0g\nFWUG0uvXUwO4V6a3D0+Wh6h2Jjg8916MBRtfMbq+P7sD5KKEC/8X2SpGqUhZJK6L/nhfFW6N246t6NQgplWQpXGY5ogybZADTPUKfnwucq9z8Gcir41E6cJZiT+6Q1edom/ngiT+bR76f0V6P628wYCj4nFlAiQEzgXkQHaDOHwSamfriw+7NtqlIY54SIbNm0nb\n6y/5DghSfU9L+51h64IO/IGrR0uDaxP6jRTRyqhTcv/jRDydY51wcUJ6AOA2LoEv\nYKtkqW9Ic/14ArgjmLfAuLW2fHOuplVptjX2AQIBIwKCAQAe96d8pjETC2zWRLvG\ng+WZhyYvuxzEMBPNCOaVqV/J6TPahtJMz32DPl9tURhJiktEdAstMtJs87KuEDVC\ntDw0aSftqwf7Tw9Sg4BuXwTMkA9IHewIVUIZSpS6jI0+hXB1qgBNhiCLgwCg8xw5\ntmI+q0kxswhrV9LikSIVEteKOR4xzfQx1QlkcqdIiaO6n/zIy1xN9m7W5o6sDluK\nq3h6RWL6V6M9Yqnt6XQrzyOKFppmYUr1EsigTK6e9bGf1mz1o7tBUbC8kkuPoi0i\nTRti6QipDcFb26JV5lwgIceLbMIoIzxiTLVbijraCVsoobufQp017E+M12gWWkyO\n2qAzAoGBAOxTuqMLZDbby9i5PPRQehuNhzXTmrFcr5JrVAJbN7Tu4FHBR4VOtN8w\nogJybjYp7hPp2CuCuHMOHTlASeOWZO62Am+WUGPer/cg7mOX6KR2VYq66IC7GAAw\nyojk4WRAWvxdqzz8EcjcnknLo0Xu+xB0wVQ6SrelvPcgmGuBhw7TAoGBAMOuQ3L+\nu2YctlH0OvWD47P2AdOdY9e/3jIhs3aRq+TVsan0y9irm1IaZtJaPUgjv4pcOiXS\n30kDgR6dwYbrgEzx7zBpKhXHRijZnjpXv7g+A2uInHqb+L+TEyN7nAm94CKRXbzR\n2iSMKqdbI55RYvdYRyzD3dl2eNhYrj+eCOtbAoGBALZPODSiY0BDKDl49IH08Hun\nsXKqjUb+W441ifMwbM1n0Z4nYw8Q1Kws1MAPIdIDFr7nmCGQuizfAJnhIw6nN+tZ\nNRRAwawg0OM2qUWD0LlimcLKs1v+CzNY1sFgG5Z6ydigB8FUvUMt2TGdF424W0c1\nfzJY2o2rvaiyvrlVSu4tAoGBAJb0JWdWyxRCCP1kooLiFg578sfRL8OxRQIZ/3i5\nhJqWOJkNTMu3lRNzc+QZuj73AXldFun6cbv7Y5tGf1lz2ADX5Gcsji4OwRgy2SWx\naAMohkuj5m02fhAhACKv0CTFrOd3dDKTQeGt9QTCpnLREdTAcWutCjoK74JTChPR\nrxv1AoGAdRJBsiTs34nphwybMylaUzwGV0+nFjYYAcs754cU1uOFwSTmaScCQdgr\n6pYqUyfjgojwJ1hYFin3a16sQuqVGhciia3retwQiyMr48wPK+HZ19INyqVpGVu2\n3q8XPTbR+R/CkAv+pFwxDfibZpXqkoQu5BcjqW1EAEACXwMkYEc=\n-----END RSA PRIVATE KEY-----"
+    },
+    "development": {
+      "deploy_key": "-----BEGIN RSA PRIVATE KEY-----\nMIIEogIBAAKCAQEAvvA/47cW9VduJPUZZKx/WhRyxmHnkyBQaCajNOaJvUbFTAJD\ngP1LWTqqfnBVCqAJN/iiw77XokpErG+j+7VxPl9gRU8v0PBw+EZ5jly312N5Uddr\nS2UeN3KygVkI8WNtdrS6FAxEwmvWMlxaDyvEDKO4MOuIOTHypDqH+xVNH5Xbaz2g\nX/wlTQZshO2v7NGCWbEI+49twP2x4CPImWagHZE5aW2uTz2tYYQ3hxmBCguMIh6B\nTKe9k2kHqnZ+PJRFwoTeTZj5aIY/oja+QHw32g+9mT70llRit2xWfs3FdHBfTu40\nWZSeA1zWQbDAT8X5VkqIeW+7Ktfb6ULAGDPFpwIBIwKCAQAgu3iqsawqDvzwZIgC\noTpnNrSXCXgn2adiT8Q09FIgcog46nH42vb5WoOgpYrr4OujMfAETJn+kGOLRlag\nLbukSt1Ntc2uyiH+rP7lNHdJfsRXLD5HcGuUeg/46rETcCFkzoZMlGOPCywIoh4R\nOrPk6N2/PlHd604qyDSRcV2tpF0R79zsdZyXE/ASilCg1g1gNXP2TSC492qALoBL\nHjyzY9au45TkCKOLpar7zqRGfNktHvHePMO/dFqrO5vP7FPUkZb8vskMp+nFbRxx\nhj4OCoBM1nQi+HqBnKP4h5p0BLdKnM2bIAtQtnSiAlzPszn6zB/EHiRHPpa6vxxK\nXPAbAoGBAPT+kydsF/mDFruUeIX89ThQnSKa6GGojHQhgD6mNk+ow052l/tukSRY\ntwd/R7eQN5FLc0ErZJMHB746Y7Jd0cZlESqf/zigjF2wUa+k4ONU3gy4CiGeq6JP\nqEOZkxoXXx/q0mHAzKM0srJO4QVE79uSlV6FKL+NxiU56LCB+jRVAoGBAMeECJrl\n4MUDULiETlOa+6atMWyZOnfheKXS6Z2SVUOzsjFL+3kDz3mvhsqgRwsz+7KkzBKQ\n4LSvj+Mz4b73NUEFd8LrQNao0Q5Hkz4FYZUzScR2UdgrqfXJB6u7ePu4SxIw3niP\n4mN31yZBwfL560uMuRtRlyf9efIYqeqPG24LAoGBAKD/ED56O6P3DvBLn6iBqHV2\nzakGtfcIXExQh3mgbNVDBABcj8J727jMlYiVeEVtZlgqRGynfJsh4IRSQYPXQLWS\n32UnT/IDGmlz3ehzqbn18QELOduUJ6UtCCxsPBh1wirqxMPlGMMFX3x8+kVKjv4B\nPZXiedz2xAnVmOkE9OCPAoGAZpusp27on9XRvfrmdCPR4LDXlu+3q14DiHsZDzVQ\na/YD3taelgH1rEukaDUr2eA4TT7PWgFdnsCwZjfwcNboMBFwyqTfhFbR6hYud6r+\n/EZDMdZzO/ky1izfX6I+OFAmm6QapGdBOnglgWOlkubuCZjUOe9yTxSlHWvFGYtt\nMUcCgYEA1FE/jDSeWnsEyXfpwORd0BnNQ1iQdMBZMKknw4UFH8ipzJ64ynZZ2Ajv\nZFA4WCaH6J2eAgK+RL2WT1Oe2KJK3Fhh8Yb7aQ3ywLWRTfHzUZIg7UJb6pqeZQDa\nVWWF6VCQad72ucllMn3cMAkEoKxNqUKaWrNoQxWoFndUmO5vMjg=\n-----END RSA PRIVATE KEY-----"
+    },
+    "staging": {
+      "deploy_key": "-----BEGIN RSA PRIVATE KEY-----\nMIIEogIBAAKCAQEAvvA/47cW9VduJPUZZKx/WhRyxmHnkyBQaCajNOaJvUbFTAJD\ngP1LWTqqfnBVCqAJN/iiw77XokpErG+j+7VxPl9gRU8v0PBw+EZ5jly312N5Uddr\nS2UeN3KygVkI8WNtdrS6FAxEwmvWMlxaDyvEDKO4MOuIOTHypDqH+xVNH5Xbaz2g\nX/wlTQZshO2v7NGCWbEI+49twP2x4CPImWagHZE5aW2uTz2tYYQ3hxmBCguMIh6B\nTKe9k2kHqnZ+PJRFwoTeTZj5aIY/oja+QHw32g+9mT70llRit2xWfs3FdHBfTu40\nWZSeA1zWQbDAT8X5VkqIeW+7Ktfb6ULAGDPFpwIBIwKCAQAgu3iqsawqDvzwZIgC\noTpnNrSXCXgn2adiT8Q09FIgcog46nH42vb5WoOgpYrr4OujMfAETJn+kGOLRlag\nLbukSt1Ntc2uyiH+rP7lNHdJfsRXLD5HcGuUeg/46rETcCFkzoZMlGOPCywIoh4R\nOrPk6N2/PlHd604qyDSRcV2tpF0R79zsdZyXE/ASilCg1g1gNXP2TSC492qALoBL\nHjyzY9au45TkCKOLpar7zqRGfNktHvHePMO/dFqrO5vP7FPUkZb8vskMp+nFbRxx\nhj4OCoBM1nQi+HqBnKP4h5p0BLdKnM2bIAtQtnSiAlzPszn6zB/EHiRHPpa6vxxK\nXPAbAoGBAPT+kydsF/mDFruUeIX89ThQnSKa6GGojHQhgD6mNk+ow052l/tukSRY\ntwd/R7eQN5FLc0ErZJMHB746Y7Jd0cZlESqf/zigjF2wUa+k4ONU3gy4CiGeq6JP\nqEOZkxoXXx/q0mHAzKM0srJO4QVE79uSlV6FKL+NxiU56LCB+jRVAoGBAMeECJrl\n4MUDULiETlOa+6atMWyZOnfheKXS6Z2SVUOzsjFL+3kDz3mvhsqgRwsz+7KkzBKQ\n4LSvj+Mz4b73NUEFd8LrQNao0Q5Hkz4FYZUzScR2UdgrqfXJB6u7ePu4SxIw3niP\n4mN31yZBwfL560uMuRtRlyf9efIYqeqPG24LAoGBAKD/ED56O6P3DvBLn6iBqHV2\nzakGtfcIXExQh3mgbNVDBABcj8J727jMlYiVeEVtZlgqRGynfJsh4IRSQYPXQLWS\n32UnT/IDGmlz3ehzqbn18QELOduUJ6UtCCxsPBh1wirqxMPlGMMFX3x8+kVKjv4B\nPZXiedz2xAnVmOkE9OCPAoGAZpusp27on9XRvfrmdCPR4LDXlu+3q14DiHsZDzVQ\na/YD3taelgH1rEukaDUr2eA4TT7PWgFdnsCwZjfwcNboMBFwyqTfhFbR6hYud6r+\n/EZDMdZzO/ky1izfX6I+OFAmm6QapGdBOnglgWOlkubuCZjUOe9yTxSlHWvFGYtt\nMUcCgYEA1FE/jDSeWnsEyXfpwORd0BnNQ1iQdMBZMKknw4UFH8ipzJ64ynZZ2Ajv\nZFA4WCaH6J2eAgK+RL2WT1Oe2KJK3Fhh8Yb7aQ3ywLWRTfHzUZIg7UJb6pqeZQDa\nVWWF6VCQad72ucllMn3cMAkEoKxNqUKaWrNoQxWoFndUmO5vMjg=\n-----END RSA PRIVATE KEY-----"
+    }
+  },
+  "build" : {
+    "development": {
+      "scala":"2.9.1",
+      "service":"1.0"
+    },
+    "staging": {
+      "scala":"2.9.1",
+      "service":"1.0"
+    },
+    "production": {
+      "scala":"2.9.1",
+      "service":"1.0"
+    }
+  },
+  "owner": "deploy",
+  "deploy_to": "/opt/timejust/service-calendar",
+  "java": {
+    "install_flavor": "sun",
+    "java_home": "/usr/lib/jvm/java-6-sun"
+  }
+}
+

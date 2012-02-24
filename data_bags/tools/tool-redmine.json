@@ -1,0 +1,27 @@
+{
+  "group": "redmine",
+  "server_roles": [
+    "tool-redmine"
+  ],
+  "packages": {
+	  "libxt-dev": "",
+    "libmysqlclient-dev": "",
+    "libcurl4-gnutls-dev": "",
+    "libxslt1-dev": "",
+    "libxml2-dev": "",
+    "libnotify-bin": "",
+    "curl": ""
+  },
+  "id": "tool-redmine",
+  "type": {
+    "tool-redmine": [
+      "tool-redmine"
+    ]
+  },
+  "port": "80",
+  "owner": "redmine",
+  "redmine" : {
+    "version": "1.3.0",
+    "dl_id": "75597"
+  }
+}
