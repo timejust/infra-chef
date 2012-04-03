@@ -2,7 +2,7 @@
   "group": "deploy",
   "repository": "git@github.com:timejust/service-ga.git",
   "server_roles": [
-    "service-calendar"
+    "service-ga"
   ],
   "force": {
     "production": false,
