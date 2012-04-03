@@ -39,15 +39,18 @@ node[:hudson][:server][:plugins].each do |name|
   end
 end
 
-bash "install_hudson" do
-  cwd "/tmp"
-  code <<-EOH
-  wget -O /tmp/key http://hudson-ci.org/debian/hudson-ci.org.key
-  sudo apt-key add /tmp/key
-  wget -O /tmp/hudson.deb http://hudson-ci.org/latest/debian/hudson.deb
-  sudo dpkg --install /tmp/hudson.deb
-  EOH
+package "hudson" do
+  action "install"
 end
+#bash "install_hudson" do
+#  cwd "/tmp"
+#  code <<-EOH
+#  wget -O /tmp/key http://hudson-ci.org/debian/hudson-ci.org.key
+#  sudo apt-key add /tmp/key
+#  wget -O /tmp/hudson.deb http://hudson-ci.org/latest/debian/hudson.deb
+#  sudo dpkg --install /tmp/hudson.deb
+#  EOH
+#end
 
 user node[:hudson][:server][:user] do
   action :modify

@@ -22,7 +22,7 @@ node.run_state[:apps].each do |current_app|
 
   app = current_app[:app]
 
-  #ssl = !(app['site'][node.app_environment]['ssl_crt'].nil?)
+  ssl = !(app['site'][node.app_environment]['ssl_crt'].nil?)
 
   node[:nginx][:configure_flags] = [
       "--prefix=#{node[:nginx][:install_path]}",
@@ -56,65 +56,66 @@ node.run_state[:apps].each do |current_app|
     )
   end
   
-  ## Do SSL only things
-  #if ssl
-  #  template "#{node[:nginx][:dir]}/sites-available/#{app['id']}-ssl.conf" do
-  #    source "nginx/#{app['id']}.conf.erb"
-  #    owner "root"
-  #    group "root"
-  #    mode "0644"
-  #    variables(
-  #      :app => app['id'],
-  #      :docroot => "/var/www/#{app['id']}/current",
-  #      :server_name => app['site'][node.app_environment]['hostname'] ? app['site'][node.app_environment]['hostname'] : "#{node[:fqdn]}",
-  #      :server_aliases => [ node[:fqdn], app['id'] ],
-  #      :environment => app['site'][node.app_environment]['environment'],
-  #      :port => "443",
-  #      :set_real_ip_from => app['site'][node.app_environment]['set_real_ip_from'],
-  #      :ssl => ssl,
-  #      :ssl_crt => "#{app['id']}-server.crt",
-  #      :ssl_key => "#{app['id']}-server.key"
-  #    ) 
-  #  end
+  # Do SSL only things
+  if ssl
+    template "#{node[:nginx][:dir]}/sites-available/#{app['id']}-ssl.conf" do
+      source "nginx/#{app['id']}.conf.erb"
+      owner "root"
+      group "root"
+      mode "0644"
+      variables(
+        :num_upstream => app['site'][node.app_environment]['num_upstream'],
+        :app => app['id'],
+        :docroot => "/var/www/#{app['id']}/current",
+        :server_name => app['site'][node.app_environment]['hostname'] ? app['site'][node.app_environment]['hostname'] : "#{node[:fqdn]}",
+        :server_aliases => [ node[:fqdn], app['id'] ],
+        :environment => app['site'][node.app_environment]['environment'],
+        :port => "443",
+        :set_real_ip_from => app['site'][node.app_environment]['set_real_ip_from'],
+        :ssl => ssl,
+        :ssl_crt => "#{app['id']}-server.crt",
+        :ssl_key => "#{app['id']}-server.key"
+      ) 
+    end
     
-  #  ruby_block "write_crt" do
-  #    block do
-  #      f = File.open("/etc/ssl/#{app['id']}-server.crt", "w")
-  #      f.print( app['site'][node.app_environment]['ssl_crt'])
-  #      f.close
-  #    end
-  #    not_if do File.exists?("/etc/ssl/#{app['id']}-server.crt"); end
-  #  end
+    ruby_block "write_crt" do
+      block do
+        f = File.open("/etc/ssl/#{app['id']}-server.crt", "w")
+        f.print( app['site'][node.app_environment]['ssl_crt'])
+        f.close
+      end
+      not_if do File.exists?("/etc/ssl/#{app['id']}-server.crt"); end
+    end
 
-  #  file "/etc/ssl/#{app['id']}-server.crt" do
-  #    owner "root"
-  #    group "root"
-  #    mode '0600'
-  #  end
+    file "/etc/ssl/#{app['id']}-server.crt" do
+      owner "root"
+      group "root"
+      mode '0600'
+    end
   
-  #  ruby_block "write_key" do
-  #    block do
-  #      f = File.open("/etc/ssl/#{app['id']}-server.key", "w")
-  #      f.print( app['site'][node.app_environment]['ssl_key'])
-  #      f.close
-  #    end
-  #    not_if do File.exists?("/etc/ssl/#{app['id']}-server.key"); end
-  #  end
+    ruby_block "write_key" do
+      block do
+        f = File.open("/etc/ssl/#{app['id']}-server.key", "w")
+        f.print( app['site'][node.app_environment]['ssl_key'])
+        f.close
+      end
+      not_if do File.exists?("/etc/ssl/#{app['id']}-server.key"); end
+    end
 
-  #  file "/etc/ssl/#{app['id']}-server.key" do
-  #    owner "root"
-  #    group "root"
-  #    mode '0600'
-  #  end
-  #end
+    file "/etc/ssl/#{app['id']}-server.key" do
+      owner "root"
+      group "root"
+      mode '0600'
+    end
+  end
 
   nginx_site "#{app['id']}.conf" do
   end
   
-  #if ssl
-  #  nginx_site "#{app['id']}-ssl.conf" do
-  #  end
-  #end
+  if ssl
+    nginx_site "#{app['id']}-ssl.conf" do
+    end
+  end
   
   ## Create application specific nginx.conf to allow for
   template "#{node[:nginx][:dir]}/nginx.conf" do

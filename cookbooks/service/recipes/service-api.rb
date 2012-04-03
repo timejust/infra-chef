@@ -24,6 +24,7 @@ node.run_state[:services].each do |current_service|
   next unless current_service[:recipes].include? "service-api"
 
   service = current_service[:service]
+  ssl = !(service['site'][node.app_environment]['ssl_crt'].nil?)
 
   ## Do explicitly so we know what we are dealing with
   v1_services = service[:services][:v1]
@@ -44,12 +45,70 @@ node.run_state[:services].each do |current_service|
     owner "root"
     group "root"
     mode "0644"
-    variables(  :v1_services => v1_services,
-                :port => service[:nginx][:port][:api],
-                :set_real_ip_from => service['site'][node.app_environment]['set_real_ip_from'] )
+    variables(  
+      :v1_services => v1_services,
+      :port => service[:nginx][:port][:api],
+      :set_real_ip_from => service['site'][node.app_environment]['set_real_ip_from'] 
+    )
     notifies :restart, resources(:service => "nginx")            
   end
 
+  # Do SSL only things
+  if ssl
+    template "#{node[:nginx][:dir]}/sites-available/#{service['id']}-ssl.conf" do
+      source "nginx/#{service['id']}-nginx.conf.erb"
+      owner "root"
+      group "root"
+      mode "0644"
+      variables(
+        :v1_services => v1_services,
+        :port => "443",
+        :set_real_ip_from => service['site'][node.app_environment]['set_real_ip_from'],                
+        :ssl => ssl,
+        :ssl_crt => "#{service['id']}-server.crt",
+        :ssl_key => "#{service['id']}-server.key"
+      ) 
+    end
+    
+    ruby_block "write_crt" do
+      block do
+        f = File.open("/etc/ssl/#{service['id']}-server.crt", "w")
+        f.print(service['site'][node.app_environment]['ssl_crt'])
+        f.close
+      end
+      not_if do File.exists?("/etc/ssl/#{service['id']}-server.crt"); end
+    end
+
+    file "/etc/ssl/#{service['id']}-server.crt" do
+      owner "root"
+      group "root"
+      mode '0600'
+    end
+  
+    ruby_block "write_key" do
+      block do
+        f = File.open("/etc/ssl/#{service['id']}-server.key", "w")
+        f.print(service['site'][node.app_environment]['ssl_key'])
+        f.close
+      end
+      not_if do File.exists?("/etc/ssl/#{service['id']}-server.key"); end
+    end
+
+    file "/etc/ssl/#{service['id']}-server.key" do
+      owner "root"
+      group "root"
+      mode '0600'
+    end
+  end
+
+  nginx_site "#{service['id']}.conf" do
+  end
+  
+  if ssl
+    nginx_site "#{service['id']}-ssl.conf" do
+    end
+  end
+  
   nginx_site "#{service['id']}.conf" do
     notifies :restart, resources(:service => "nginx")
   end
